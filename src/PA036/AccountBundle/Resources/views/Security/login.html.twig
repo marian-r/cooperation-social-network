@@ -1,0 +1,38 @@
+{% extends 'PA036SocialNetworkBundle::layout.html.twig' %}
+
+{% block title "Please sing in" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ asset('bundles/pa036account/css/styles.css') }}" />
+{% endblock %}
+
+{% block content %}
+
+    <h3 style="text-align: center; color: gray">Sign in to continue to Cooperation social network</h3>
+    <div id="signin">
+        <div id="box">
+            <div style="text-align: center">
+                <img src="{{ asset('bundles/pa036socialnetwork/images/user_icon.jpg') }}" alt="" title="" />
+            </div>
+            <form class="form-signin" action="{{ path("login_check") }}" method="post" id="login">
+
+                <input id="username" name="_username" type="text" class="form-control" placeholder="Email" value="{{ last_username }}" autofocus>
+                <input id="password" name="_password" type="password" class="form-control" placeholder="Password">
+                <!--
+                <label class="checkbox">
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+                -->
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+    {% if error %}
+                <div class="alert alert-error">{{ error.message }}</div>
+    {% endif %}
+
+            </form>
+        </div>
+        <div id="create_account"><a href="{{ path('account_register') }}">Create an account </a></div>
+    </div>
+
+
+{% endblock %}

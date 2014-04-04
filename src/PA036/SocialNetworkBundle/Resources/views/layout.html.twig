@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title 'layout title' %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Bootstrap -->
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+
+        <link rel="stylesheet" href="{{ asset('bundles/pa036socialnetwork/css/styles.css') }}" />
+
+        <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+        <script src="{{ asset('js/jquery_jquery-1.10.2_1.js') }}"></script>
+        <!-- Include all JavaScripts, compiled by Assetic -->
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+        {% block head %}{% endblock %}
+
+        <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+
+    </head>
+
+    <body>   
+
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-brand">Logo</div>
+                    <!--<div style="background: #439639; width: 150px; height: 50px;">
+                        <img src="{{ asset('bundles/pa036socialnetwork/images/logo.png') }}" alt="logo" title="" style="margin: 8px 0 0 25px" />
+                    </div>-->
+
+                </div>
+                <div class="collapse navbar-collapse">
+                    <p class="navbar-text pull-right">
+                            {% if app.user %}
+                            Logged in as {{ app.user.email}} | <a href="{{ path('logout') }}">Logout</a>
+                            {% endif %}
+                        </p>
+                            {% if not app.user %}
+                        <ul class="nav navbar-nav pull-right">
+                            <li><a href="{{ path('account_register') }}">Create an Account</a></li>
+                        </ul>
+                            {% endif %}
+                        <ul class="nav navbar-nav">
+                                {% if app.user %}<li {%  if app.request.get('_route') == 'home' %} class="active" {% endif %}><a href="{{ path('home') }}">Home</a></li>{% endif %}
+                                {% if app.user %}<li {%  if app.request.get('_route') == 'group_list' %} class="active" {% endif %}><a href="{{ path('group_list') }}">Group</a></li>{% endif %}
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+                <!-- Wrap all page content here -->
+                <div id="wrap">
+                    <div class="container">
+                                    {% for flashMessage in app.session.flashbag.get('notice') %}
+                            <div class="flash-message">
+                                <em>Notice</em>: {{ flashMessage }}
+                            </div>
+                    {% endfor %}
+
+                {% block content %}{% endblock %}
+
+                            {% if code is defined %}
+                            <h2>Code behind this page</h2>
+                            <div class="block">
+                                <div class="symfony-content">{{ code|raw }}</div>
+                            </div>
+                            {% endif %}
+                        </div><!-- /.container -->
+                    </div>
+                    <hr>
+
+                    <div id="footer">
+                        <div class="container">
+                            <p class="text-muted credit">xxx xxx xxx xxx</p>
+                        </div>
+                    </div>
+                </body>
+            </html>		

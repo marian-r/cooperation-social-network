@@ -1,0 +1,11 @@
+test_test_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: TestTestBundle:Default:index }
+
+add:
+    pattern: /add
+    defaults: { _controller: TestTestBundle:Secured:add }
+
+remove:
+    pattern: /remove
+    defaults: { _controller: TestTestBundle:Secured:remove }

@@ -1,0 +1,10 @@
+pa036_social_network:
+    resource: "@PA036SocialNetworkBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+translogik_account:
+    resource: "@PA036AccountBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

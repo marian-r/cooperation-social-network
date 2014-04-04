@@ -1,0 +1,50 @@
+
+
+{% extends 'PA036SocialNetworkBundle::layout.html.twig' %}
+
+{% block title "Registration - Cooperation social network" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ asset('bundles/pa036account/css/styles.css') }}" />
+{% endblock %}
+
+{% block content %}
+
+
+    <h3 style="text-align: center; color: gray">Create your Account</h3>
+    <div id="registration">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+            <div class="form-group">
+            {{ form_label(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+                </div>
+            
+            <div class="form-group">
+            {{ form_label(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+                </div>
+            
+                <div class="form-group">
+            {{ form_label(form.email) }}
+            {{ form_errors(form.email) }}
+            {{ form_widget(form.email) }}
+                    </div>
+
+                    <div class="form-group">
+            {{ form_errors(form.password) }}
+            {{ form_widget(form.password) }}
+                        </div>
+
+                        <div>
+            {{ form_widget(form.register, {'attr': {'class': 'btn btn-lg btn-primary btn-block'}}) }}
+                            </div>
+
+    {{ form_end(form) }}
+                            <div id="sing_in"><a href="{{ path('login') }}">Sing in</a></div>
+                        </div>
+
+{% endblock %}
