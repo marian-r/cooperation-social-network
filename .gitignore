@@ -3,3 +3,4 @@
 /app/logs/
 /app/cache/
 /nbproject/private/
+/vendor
