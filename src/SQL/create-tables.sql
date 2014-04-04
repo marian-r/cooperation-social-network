@@ -81,7 +81,8 @@ CREATE TABLE "conversation_members" (
   "member_id"       SERIAL NOT NULL,
   "conversation_id" int4 NOT NULL, 
   "user_id"         int4 NOT NULL, 
-  PRIMARY KEY ("member_id")
+  PRIMARY KEY ("member_id"),
+  UNIQUE ("conversation_id", "user_id")
 );
 
 CREATE TABLE "messages" (
