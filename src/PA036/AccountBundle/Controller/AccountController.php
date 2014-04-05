@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use PA036\AccountBundle\Entity\User;
+use PA036\AccountBundle\Entity\Users;
 
 class AccountController extends Controller {
 
@@ -15,7 +15,7 @@ class AccountController extends Controller {
      * @Template()
      */
     public function registerAction(Request $request) {
-        $user = new User();
+        $user = new Users();
         $form = $this->createFormBuilder($user)
                 ->add('firstName', 'text')
                 ->add('lastName', 'text')
@@ -34,7 +34,8 @@ class AccountController extends Controller {
 
         if ($form->isValid()) {
             $user = $form->getData();
-
+            $user->setLastLogin(new \DateTime(date('Y-m-d H:i:s')));
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

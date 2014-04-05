@@ -1,6 +1,6 @@
 security:
     encoders:
-      PA036\AccountBundle\Entity\User:
+      PA036\AccountBundle\Entity\Users:
                   algorithm: bcrypt
                   iterations: 13
 
@@ -10,7 +10,7 @@ security:
 
     providers:
       users:
-            entity: { class: PA036AccountBundle:User, property: email }
+            entity: { class: PA036AccountBundle:Users, property: email }
 
     firewalls:
         dev:

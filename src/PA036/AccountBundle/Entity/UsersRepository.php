@@ -8,13 +8,12 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
-class UserRepository extends EntityRepository implements UserProviderInterface {
+class UsersRepository extends EntityRepository implements UserProviderInterface {
 
     public function loadUserByUsername($username) {
         $q = $this
                 ->createQueryBuilder('u')
-                ->where('u.username = :username OR u.email = :email')
-                ->setParameter('username', $username)
+                ->where('u.email = :email')
                 ->setParameter('email', $username)
                 ->getQuery();
 
@@ -42,7 +41,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface {
             );
         }
 
-        return $this->find($user->getId());
+        return $this->find($user->getUserId());
     }
 
     public function supportsClass($class) {
