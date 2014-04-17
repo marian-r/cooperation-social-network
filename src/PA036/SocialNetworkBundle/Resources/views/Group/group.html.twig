@@ -23,8 +23,14 @@
                 .done(function( data ) {
                     $('ul#group li.group').remove();
                     
-                    var activeClass = '';
-        
+                    var activeClass = '', leaveClass = '';
+                    var path = "{{ app.request.uri }}";
+                    path = path.replace(path.substring(path.lastIndexOf('/') + 1), '')
+                    
+                    if(path.indexOf("group") === -1) {
+                        path += 'group/';
+                    }
+
                     var response = jQuery.parseJSON(data);
                     var groupsMy = response.groups;
                 
@@ -32,20 +38,24 @@
                         
                       if(groupId === groupsMyAdmin[key].groupId) {
                           activeClass = 'active';
+                          leaveClass = 'hide';
                       } else {
                           activeClass = '';
+                          leaveClass = '';
                       }
-                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="group/'+groupsMyAdmin[key].groupId+'">'+groupsMyAdmin[key].name+'</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId='+groupsMyAdmin[key].groupId+'"><i class="icon-edit"></i></span> <span class="pull-right leave" href="group/leave/'+groupsMyAdmin[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="'+path+groupsMyAdmin[key].groupId+'">'+groupsMyAdmin[key].name+'</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId='+groupsMyAdmin[key].groupId+'"><i class="icon-edit"></i></span> <span class="pull-right leave '+leaveClass+'" href="group/leave/'+groupsMyAdmin[key].groupId+'"><i class="icon-remove"></i></span></li>');
                     }
 
                     for (var key in groupsMy) {
                       
                       if(groupId === groupsMyAdmin[key].groupId) {
                           activeClass = 'active';
+                          leaveClass = 'hide';
                       } else {
                           activeClass = '';
+                          leaveClass = '';
                       }                       
-                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="group/'+groupsMy[key].groupId+'">'+groupsMy[key].name+'</a> <span class="pull-right leave" href="group/leave/'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="'+path+groupsMy[key].groupId+'">'+groupsMy[key].name+'</a> <span class="pull-right leave '+leaveClass+'" href="group/leave/'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span></li>');
                     }
                     
                     $('#group .loading').hide();
