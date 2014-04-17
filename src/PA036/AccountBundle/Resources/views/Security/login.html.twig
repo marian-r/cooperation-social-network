@@ -8,6 +8,7 @@
 
 {% block content %}
 
+<div class="span12">
     <h3 style="text-align: center; color: gray">Sign in to continue to Cooperation social network</h3>
     <div id="signin">
         <div id="box">
@@ -16,14 +17,14 @@
             </div>
             <form class="form-signin" action="{{ path("login_check") }}" method="post" id="login">
 
-                <input id="username" name="_username" type="text" class="form-control" placeholder="Email" value="{{ last_username }}" autofocus>
-                <input id="password" name="_password" type="password" class="form-control" placeholder="Password">
+                <input id="username" name="_username" type="text" class="form-control input-block-level" placeholder="Email" value="{{ last_username }}" autofocus>
+                <input id="password" name="_password" type="password" class="form-control input-block-level" placeholder="Password">
                 <!--
                 <label class="checkbox">
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
                 -->
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button class="btn btn-large btn-primary btn-block" type="submit">Sign in</button>
 
     {% if error %}
                 <div class="alert alert-error">{{ error.message }}</div>
@@ -33,6 +34,6 @@
         </div>
         <div id="create_account"><a href="{{ path('account_register') }}">Create an account </a></div>
     </div>
-
+</div><!--/row-->
 
 {% endblock %}
