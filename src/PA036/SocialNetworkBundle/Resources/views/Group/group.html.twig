@@ -6,8 +6,13 @@
 
 <script type="text/javascript">
         function updateGroupMenu() {
-            
-                            
+            var groupId;
+            {% if groupId is defined %}
+                groupId = {{ groupId }}
+            {% endif %}       
+    
+            $('#group .loading').show();
+    
             $.get( "{{ path('group_my_admin') }}")
             .done(function( data ) {
                 
@@ -16,18 +21,34 @@
                 
                 $.get( "{{ path('group_my') }}")
                 .done(function( data ) {
-                    $('ul#group_my li.group').remove();
-                            
+                    $('ul#group li.group').remove();
+                    
+                    var activeClass = '';
+        
                     var response = jQuery.parseJSON(data);
                     var groupsMy = response.groups;
                 
                     for (var key in groupsMyAdmin) {
-                      $('ul#group_my').append('<li class="group clearfix"><a class="pull-left" href="group/'+groupsMyAdmin[key].groupId+'">'+groupsMyAdmin[key].name+'</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId='+groupsMyAdmin[key].groupId+'"><i class="icon-edit"></i></span> <span class="pull-right leave" href="group/leave/'+groupsMyAdmin[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                        
+                      if(groupId === groupsMyAdmin[key].groupId) {
+                          activeClass = 'active';
+                      } else {
+                          activeClass = '';
+                      }
+                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="group/'+groupsMyAdmin[key].groupId+'">'+groupsMyAdmin[key].name+'</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId='+groupsMyAdmin[key].groupId+'"><i class="icon-edit"></i></span> <span class="pull-right leave" href="group/leave/'+groupsMyAdmin[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                    }
+
+                    for (var key in groupsMy) {
+                      
+                      if(groupId === groupsMyAdmin[key].groupId) {
+                          activeClass = 'active';
+                      } else {
+                          activeClass = '';
+                      }                       
+                      $('ul#group .loading').before('<li class="group clearfix '+activeClass+'"><a class="pull-left" href="group/'+groupsMy[key].groupId+'">'+groupsMy[key].name+'</a> <span class="pull-right leave" href="group/leave/'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span></li>');
                     }
                     
-                    for (var key in groupsMy) {
-                      $('ul#group_my').append('<li class="group clearfix"><a class="pull-left" href="group/'+groupsMy[key].groupId+'">'+groupsMy[key].name+'</a> <span class="pull-right leave" href="group/leave/'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span></li>');
-                    }
+                    $('#group .loading').hide();
                 });   
             });  
           
@@ -86,29 +107,10 @@
 {% block content %}
 <div class="span3">
     <div class="well sidebar-nav">
-        <ul id="group_my" class="nav nav-list">
-            <li class="nav-header">My groups</li>     
-            {#<li class="active"><a href="#">Link</a></li>#}
+        <ul id="group" class="nav nav-list">
+            <li class="nav-header">My groups</li>
             <li><a href="#" class="fancybox" data-fancybox-href="group/add">Add group</a></li>
-            {% for group in myAdminGroups %}
-                <li {% if groupId is defined and group.groupId == groupId %} class="group clearfix active" {% else %} class="group clearfix" {% endif %}>
-                    <a class="pull-left" href="group/{{ group.groupId }}">
-                        {{ group.name }}                       
-                    </a>  
-                    <span id="{{ group.groupId }}" class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId={{ group.groupId }}"><i class="icon-edit"></i></span>
-                    {% if groupId is defined and group.groupId != groupId %}
-                        <span id="{{ group.groupId }}" class="pull-right leave"><i class="icon-remove"></i></span> 
-                    {% endif %}
-                </li>
-            {% endfor %}
-            {% for group in myGroups %}
-                <li class="group clearfix">
-                    <a class="pull-left" href="group/{{ group.groupId }}">
-                        {{ group.name }}
-                    </a>
-                    <span id="{{ group.groupId }}" class="pull-right leave"><i class="icon-remove"></i></span>
-                </li>
-            {% endfor %}                   
+            <li class="loading">Loading...</li>
         </ul>
     </div><!--/.well -->
 </div><!--/span-->
