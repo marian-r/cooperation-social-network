@@ -1,0 +1,119 @@
+{% extends "PA036SocialNetworkBundle::layout.html.twig" %}
+
+{% block title "page title" %}
+
+{% block head %}
+
+<script type="text/javascript">
+        function updateGroupMenu() {
+            
+                            
+            $.get( "{{ path('group_my_admin') }}")
+            .done(function( data ) {
+                
+                var response = jQuery.parseJSON(data);
+                var groupsMyAdmin = response.groups;
+                
+                $.get( "{{ path('group_my') }}")
+                .done(function( data ) {
+                    $('ul#group_my li.group').remove();
+                            
+                    var response = jQuery.parseJSON(data);
+                    var groupsMy = response.groups;
+                
+                    for (var key in groupsMyAdmin) {
+                      $('ul#group_my').append('<li class="group clearfix"><a class="pull-left" href="group/'+groupsMyAdmin[key].groupId+'">'+groupsMyAdmin[key].name+'</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId='+groupsMyAdmin[key].groupId+'"><i class="icon-edit"></i></span> <span class="pull-right leave" href="group/leave/'+groupsMyAdmin[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                    }
+                    
+                    for (var key in groupsMy) {
+                      $('ul#group_my').append('<li class="group clearfix"><a class="pull-left" href="group/'+groupsMy[key].groupId+'">'+groupsMy[key].name+'</a> <span class="pull-right leave" href="group/leave/'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span></li>');
+                    }
+                });   
+            });  
+          
+        }   
+        
+        $(document).ready(function() {
+            updateGroupMenu();
+        });
+        
+        $(document).ready(function() {
+            $(".fancybox").fancybox({
+                // API options 
+                autoScale: true,
+                width         : 500,
+                height        : 500,
+                type: 'iframe',
+                padding: 0,
+                    beforeClose: function() {
+                    updateGroupMenu();
+                }
+            });
+        });
+        
+        $(document).ready(function() {    
+        
+            $(".leave").on("click", function() {
+                
+                var groupId = $(this).attr('id');
+                
+                $.get("{{ path('group_leave') }}", { groupId: groupId })
+                .done(function( data ) {
+                    var response = jQuery.parseJSON(data);
+                    if(response.status === "true") {
+                        $("#" + groupId).parent().hide();
+                    }
+                });
+            });
+        });
+</script>
+
+<style type="text/css">
+        .group:hover {
+            background: #EEEEEE;
+            /*cursor: pointer;*/
+        }
+        .edit, .leave {
+            cursor: pointer;
+        }
+        .active {
+            color: red;
+        }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="span3">
+    <div class="well sidebar-nav">
+        <ul id="group_my" class="nav nav-list">
+            <li class="nav-header">My groups</li>     
+            {#<li class="active"><a href="#">Link</a></li>#}
+            <li><a href="#" class="fancybox" data-fancybox-href="group/add">Add group</a></li>
+            {% for group in myAdminGroups %}
+                <li {% if groupId is defined and group.groupId == groupId %} class="group clearfix active" {% else %} class="group clearfix" {% endif %}>
+                    <a class="pull-left" href="group/{{ group.groupId }}">
+                        {{ group.name }}                       
+                    </a>  
+                    <span id="{{ group.groupId }}" class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId={{ group.groupId }}"><i class="icon-edit"></i></span>
+                    {% if groupId is defined and group.groupId != groupId %}
+                        <span id="{{ group.groupId }}" class="pull-right leave"><i class="icon-remove"></i></span> 
+                    {% endif %}
+                </li>
+            {% endfor %}
+            {% for group in myGroups %}
+                <li class="group clearfix">
+                    <a class="pull-left" href="group/{{ group.groupId }}">
+                        {{ group.name }}
+                    </a>
+                    <span id="{{ group.groupId }}" class="pull-right leave"><i class="icon-remove"></i></span>
+                </li>
+            {% endfor %}                   
+        </ul>
+    </div><!--/.well -->
+</div><!--/span-->
+
+<div class="span9">   
+    {% include 'PA036SocialNetworkBundle:Post:posts.html.twig' %}
+</div>
+{% endblock %}

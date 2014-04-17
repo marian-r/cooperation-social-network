@@ -5,12 +5,12 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Posts
+ * Post
  *
  * @ORM\Table(name="posts", indexes={@ORM\Index(name="IDX_885DBAFAFE54D947", columns={"group_id"}), @ORM\Index(name="IDX_885DBAFA727ACA70", columns={"parent_id"})})
  * @ORM\Entity
  */
-class Posts
+class Post
 {
     /**
      * @var integer
@@ -58,9 +58,9 @@ class Posts
     private $seensCount;
 
     /**
-     * @var \Groups
+     * @var \Group
      *
-     * @ORM\ManyToOne(targetEntity="Groups")
+     * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="group_id", referencedColumnName="group_id")
      * })
@@ -68,9 +68,9 @@ class Posts
     private $group;
 
     /**
-     * @var \Posts
+     * @var \Post
      *
-     * @ORM\ManyToOne(targetEntity="Posts")
+     * @ORM\ManyToOne(targetEntity="Post")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="parent_id", referencedColumnName="post_id")
      * })
@@ -80,7 +80,7 @@ class Posts
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="PA036\AccountBundle\Entity\Users", mappedBy="post")
+     * @ORM\ManyToMany(targetEntity="PA036\AccountBundle\Entity\User", mappedBy="post")
      */
     private $user;
 

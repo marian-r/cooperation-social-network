@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use PA036\AccountBundle\Entity\Users;
+use PA036\AccountBundle\Entity\User;
 
 class AccountController extends Controller {
 
@@ -15,14 +15,14 @@ class AccountController extends Controller {
      * @Template()
      */
     public function registerAction(Request $request) {
-        $user = new Users();
+        $user = new User();
         $form = $this->createFormBuilder($user)
                 ->add('firstName', 'text')
                 ->add('lastName', 'text')
                 ->add('email', 'text')
                 ->add('password', 'repeated', array(
                     'type' => 'password',
-                    'options' => array('attr' => array('class' => 'password-field')),
+                    'options' => array('attr' => array('class' => 'password-field input-block-level')),
                     'required' => true,
                     'first_options' => array('label' => 'Password'),
                     'second_options' => array('label' => 'Repeat Password'),

@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
-class UsersRepository extends EntityRepository implements UserProviderInterface {
+class UserRepository extends EntityRepository implements UserProviderInterface {
 
     public function loadUserByUsername($username) {
         $q = $this

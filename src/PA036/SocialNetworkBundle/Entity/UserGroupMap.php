@@ -10,16 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user_group_map", indexes={@ORM\Index(name="IDX_10DFCF26FE54D947", columns={"group_id"})})
  * @ORM\Entity
  */
-class UserGroupMap
-{
+class UserGroupMap {
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="\PA036\AccountBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
+     * })
      */
-    private $userId;
+    private $user;
 
     /**
      * @var boolean
@@ -29,16 +32,41 @@ class UserGroupMap
     private $isAdmin;
 
     /**
-     * @var \Groups
+     * @var \Group
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="Groups")
+     * @ORM\OneToOne(targetEntity="Group")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="group_id", referencedColumnName="group_id")
      * })
      */
     private $group;
+
+    public function getUser() {
+        return $this->user;
+    }
+
+    public function setUser(\PA036\AccountBundle\Entity\User $user) {
+        $this->user = $user;
+    }
+
+    public function getIsAdmin() {
+        return $this->isAdmin;
+    }
+
+    public function setIsAdmin($isAdmin) {
+        $this->isAdmin = $isAdmin;
+    }
+
+    public function getGroup() {
+        return $this->group;
+    }
+
+    public function setGroup(Group $group) {
+        $this->group = $group;
+    }
+
 
 
 }

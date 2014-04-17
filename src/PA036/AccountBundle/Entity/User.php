@@ -7,13 +7,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Users
+ * User
  *
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_email_key", columns={"email"})})
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="PA036\AccountBundle\Entity\UsersRepository")
+ * @ORM\Entity(repositoryClass="PA036\AccountBundle\Entity\UserRepository")
  */
-class Users implements UserInterface, \Serializable {
+class User implements UserInterface, \Serializable {
 
     /**
      * @var integer
@@ -75,7 +75,7 @@ class Users implements UserInterface, \Serializable {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Groups", inversedBy="user")
+     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Group", inversedBy="user")
      * @ORM\JoinTable(name="user_group_map",
      *   joinColumns={
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
@@ -90,7 +90,7 @@ class Users implements UserInterface, \Serializable {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Posts", inversedBy="user")
+     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Post", inversedBy="user")
      * @ORM\JoinTable(name="likes",
      *   joinColumns={
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")

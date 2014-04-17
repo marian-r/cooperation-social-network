@@ -9,9 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="groups", uniqueConstraints={@ORM\UniqueConstraint(name="groups_name_key", columns={"name"})})
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="PA036\SocialNetworkBundle\Entity\GroupRepository")
  */
-class Groups
-{
+class Group implements \JsonSerializable {
+
     /**
      * @var integer
      *
@@ -39,15 +40,14 @@ class Groups
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="PA036\AccountBundle\Entity\Users", mappedBy="group")
+     * @ORM\ManyToMany(targetEntity="PA036\AccountBundle\Entity\User", mappedBy="group")
      */
     private $user;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->user = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -81,6 +81,15 @@ class Groups
 
     public function setUser(\Doctrine\Common\Collections\Collection $user) {
         $this->user = $user;
+    }
+
+    public function jsonSerialize() {
+        return array(
+            'groupId' => $this->groupId,
+            'name'=> $this->name,
+            'Description' => $this->description
+        );
+
     }
 
 
