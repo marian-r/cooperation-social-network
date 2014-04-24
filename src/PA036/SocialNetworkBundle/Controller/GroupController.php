@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PA036\SocialNetworkBundle\Entity\Group;
+use PA036\SocialNetworkBundle\Entity\Post;
 
 /**
  * @Route("/group")
@@ -158,20 +159,18 @@ class GroupController extends Controller {
     }
 
     /**
-     * @Route("/{groupId}", name="group")
+     * @Route("/{group_id}", name="group")
      * @Template("PA036SocialNetworkBundle:Group:group.html.twig")
      */
-    public function groupAction($groupId) {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
+    public function groupAction($group_id) {
+        $post = new Post();
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $myGroups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyGroup($username);
-        $myAdminGroups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyAdminGroup($username);
-        
-        $group = $em->getRepository('PA036SocialNetworkBundle:Group')->findBy(array("groupId" => $groupId));
-        $posts = $em->getRepository('PA036SocialNetworkBundle:Post')->findBy(array("parent" => null, "group" => $group));
-        
-        return array('myGroups' => $myGroups, 'myAdminGroups' => $myAdminGroups, 'posts' => $posts, "groupId" => $groupId);
+        $form = $this->createFormBuilder($post)
+                ->add('text', 'text')
+                ->add('add', 'submit')
+                ->getForm();
+
+        return array('form_post_add' => $form->createView());
     }
 
 }

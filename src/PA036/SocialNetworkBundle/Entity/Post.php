@@ -3,6 +3,7 @@
 namespace PA036\SocialNetworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PA036\SocialNetworkBundle\Entity\Group;
 
 /**
  * Post
@@ -10,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="posts", indexes={@ORM\Index(name="IDX_885DBAFAFE54D947", columns={"group_id"}), @ORM\Index(name="IDX_885DBAFA727ACA70", columns={"parent_id"})})
  * @ORM\Entity
  */
-class Post
-{
+class Post implements \JsonSerializable {
+
     /**
      * @var integer
      *
@@ -87,9 +88,91 @@ class Post
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getPostId() {
+        return $this->postId;
+    }
+
+    public function setPostId($postId) {
+        $this->postId = $postId;
+    }
+
+    public function getUserId() {
+        return $this->userId;
+    }
+
+    public function setUserId($userId) {
+        $this->userId = $userId;
+    }
+
+    public function getText() {
+        return $this->text;
+    }
+
+    public function setText($text) {
+        $this->text = $text;
+    }
+
+    public function getTimestamp() {
+        return $this->timestamp;
+    }
+
+    public function setTimestamp(\DateTime $timestamp) {
+        $this->timestamp = $timestamp;
+    }
+
+    public function getLikesCount() {
+        return $this->likesCount;
+    }
+
+    public function setLikesCount($likesCount) {
+        $this->likesCount = $likesCount;
+    }
+
+    public function getSeensCount() {
+        return $this->seensCount;
+    }
+
+    public function setSeensCount($seensCount) {
+        $this->seensCount = $seensCount;
+    }
+
+    public function getGroup() {
+        return $this->group;
+    }
+
+    public function setGroup(Group $group) {
+        $this->group = $group;
+    }
+
+    public function getParent() {
+        return $this->parent;
+    }
+
+    public function setParent(Post $parent) {
+        $this->parent = $parent;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+
+    public function setUser(\Doctrine\Common\Collections\Collection $user) {
+        $this->user = $user;
+    }
+
+    public function jsonSerialize() {
+        return array(
+            'postId' => $this->postId,
+            'text' => $this->text
+        );
+    }
+
+    public function __toString() {
+        return $this->postId . '';
     }
 
 }

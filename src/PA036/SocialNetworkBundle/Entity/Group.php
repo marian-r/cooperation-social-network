@@ -89,7 +89,6 @@ class Group implements \JsonSerializable {
             'name'=> $this->name,
             'Description' => $this->description
         );
-
     }
 
 
