@@ -16,7 +16,7 @@ class HomeController extends Controller {
     public function indexAction() {
         $username = $this->get('security.context')->getToken()->getUser()->getUsername();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $myGroups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyGroup($username);
         $myAdminGroups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyAdminGroup($username);
         
