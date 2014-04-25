@@ -1,0 +1,119 @@
+
+
+{% extends 'PA036SocialNetworkBundle::layout.html.twig' %}
+
+{% block title "" %}
+
+{% block head %}
+
+<style type="text/css">
+        #account_edit  {
+            text-align: center;
+            max-width: 360px;
+            margin: 0 auto;
+            background: white;
+
+            box-shadow:0px 0px 16px #525252;
+            border-radius: 5px; 
+            -moz-border-radius: 5px; 
+            -webkit-border-radius: 5px; 
+            border: 1px solid silver;
+        }
+        #account_edit form {
+            padding: 0px 10px 0px 10px;
+            text-align: left;
+
+        }
+        #account_edit form div {
+            margin-top: 10px;
+            padding: 0px;
+        }
+        .alert p, .alert ul li {
+            margin: 5px 10px 5px 10px;
+        }
+        .alert ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block content %}
+
+
+    <h3 style="text-align: center; color: gray">Editing your Account Information</h3>
+    <div id="account_edit">
+    {{ form_start(form_account_edit) }}
+        {{ form_errors(form_account_edit) }}
+
+            <div class="form-group">
+            {{ form_label(form_account_edit.firstName) }}
+            {{ form_widget(form_account_edit.firstName, {'attr': {'class': 'input-block-level'}}) }}
+            {% if form_errors(form_account_edit.firstName) is not empty %}
+            <div class="alert alert-error"><p>{{ form_errors(form_account_edit.firstName) }}</p></div>
+            {% endif %}
+            </div>
+
+            <div class="form-group">
+            {{ form_label(form_account_edit.lastName) }}
+            {{ form_widget(form_account_edit.lastName, {'attr': {'class': 'input-block-level'}}) }}
+            {% if form_errors(form_account_edit.lastName) is not empty %}
+            <div class="alert alert-error"><p>{{ form_errors(form_account_edit.firstName) }}</p></div>
+            {% endif %}
+            </div>
+            
+            {% if info.account_email_exist is defined %}
+                <div class="alert alert-error"><p>{{ info.account_email_exist }}</p></div>
+            {% endif %}
+                
+            <div>
+            {{ form_widget(form_account_edit.change, {'attr': {'class': 'btn btn-large btn-primary btn-block'}}) }}
+            </div>
+            {% if info.account_change_success is defined %}
+                <div class="alert alert-success"><p>{{ info.account_change_success }}</p></div>
+            {% endif %}
+
+    {{ form_end(form_account_edit) }}
+
+    {{ form_start(form_password_edit) }}
+        {{ form_errors(form_password_edit) }}
+            
+            <div class="form-group">
+            {{ form_label(form_password_edit.oldPassword) }}
+            {{ form_widget(form_password_edit.oldPassword, {'attr': {'class': 'input-block-level'}}) }}
+            {% if form_errors(form_password_edit.oldPassword) is not empty %}
+            <div class="alert alert-error"><p>{{ form_errors(form_password_edit.oldPassword) }}</p></div>
+            {% endif %}
+            </div>
+            
+            <div class="form-group">
+            {{ form_label(form_password_edit.newPassword.first) }}
+            {{ form_widget(form_password_edit.newPassword.first, {'attr': {'class': 'input-block-level'}}) }}
+            {% if form_errors(form_password_edit.newPassword.first) is not empty %}
+            <div class="alert alert-error"><p>{{ form_errors(form_password_edit.newPassword.first) }}</p></div>
+            {% endif %}
+            </div>
+            
+            <div class="form-group">
+            {{ form_label(form_password_edit.newPassword.second) }}
+            {{ form_widget(form_password_edit.newPassword.second, {'attr': {'class': 'input-block-level'}}) }}
+            {% if form_errors(form_password_edit.newPassword.second) is not empty %}
+            <div class="alert alert-error"><p>{{ form_errors(form_password_edit.newPassword.second) }}</p></div>
+            {% endif %}
+            </div>
+            
+            <div>
+            {{ form_widget(form_password_edit.change, {'attr': {'class': 'btn btn-large btn-primary btn-block'}}) }}
+            </div>
+                
+            {% if info.account_change_pass_success is defined %}
+                <div class="alert alert-success"><p>{{ info.account_change_pass_success }}</p></div>
+            {% endif %}
+                
+    {{ form_end(form_password_edit) }}        
+     </div>
+
+{% endblock %}

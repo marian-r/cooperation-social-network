@@ -15,7 +15,7 @@
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
                             {% if app.user %}
-                        Logged in as {{ app.user.email}} | <a href="{{ path('logout') }}">Logout</a>
+                        Logged in as <a href="{{ path('account_edit') }}">{{ app.user.email}}</a> | <a href="{{ path('logout') }}">Logout</a>
                             {% endif %}
                     </p>
                         {% if not app.user %}

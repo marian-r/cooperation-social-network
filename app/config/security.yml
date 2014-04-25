@@ -32,8 +32,7 @@ security:
             form_login:
                 check_path: login_check
                 login_path: login
-                always_use_default_target_path: true
-                default_target_path: home
+                success_handler: security.authentication.login_success_handler
             logout:
                 path:   logout
                 target: login

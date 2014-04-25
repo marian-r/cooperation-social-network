@@ -114,7 +114,9 @@ class User implements UserInterface, \Serializable {
     public function __construct() {
         $this->group = new \Doctrine\Common\Collections\ArrayCollection();
         $this->post = new \Doctrine\Common\Collections\ArrayCollection();
-
+        
+        $this->salt = '%%#$gfd9dg#fdg$8564%d$';
+        
         $this->isActive = true;
     }
 
@@ -127,7 +129,7 @@ class User implements UserInterface, \Serializable {
     }
 
     public function setPassword($password) {
-        $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 13));
+        $this->password = $password;
     }
 
     public function getRoles() {

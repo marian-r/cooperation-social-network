@@ -1,20 +1,15 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <!--
-    <parameters>
-        <parameter key="translogik_account.example.class">Translogik\AccountBundle\Example</parameter>
-    </parameters>
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="translogik_account.example" class="%translogik_account.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="security.authentication.login_success_handler" class="PA036\AccountBundle\EventListener\LoginSuccessHandler">
+            <argument type="service" id="router"/>
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
     </services>
-    -->
+
 </container>
