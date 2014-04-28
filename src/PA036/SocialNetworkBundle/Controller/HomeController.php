@@ -2,14 +2,25 @@
 
 namespace PA036\SocialNetworkBundle\Controller;
 
+use PA036\SocialNetworkBundle\Model\Domain\IGroupService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use PA036\SocialNetworkBundle\Entity\Post;
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
+	/** @var IGroupService */
+	private $groupService;
 
-    /**
+
+	function __construct(IGroupService $groupService)
+	{
+		$this->groupService = $groupService;
+	}
+
+
+	/**
      * @Route("", name="home")
      * @Template("PA036SocialNetworkBundle:Group:group.html.twig")
      */
@@ -31,5 +42,4 @@ class HomeController extends Controller {
         
         return array('myGroups' => $myGroups, 'myAdminGroups' => $myAdminGroups, 'posts' => $posts, 'form_post_add' => $form->createView());
     }
-
 }

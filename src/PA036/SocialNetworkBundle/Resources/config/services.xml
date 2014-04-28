@@ -8,13 +8,16 @@
     <parameters>
         <parameter key="pa036_social_network.example.class">PA036\SocialNetworkBundle\Example</parameter>
     </parameters>
+    -->
 
     <services>
-        <service id="pa036_social_network.example" class="%pa036_social_network.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="pa036_social_network.groups" class="PA036\SocialNetworkBundle\Model\Domain\GroupService">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="pa036_social_network.controller.home" class="PA036\SocialNetworkBundle\Controller\HomeController">
+            <argument type="service" id="pa036_social_network.groups"/>
         </service>
     </services>
-    -->
+
 </container>
