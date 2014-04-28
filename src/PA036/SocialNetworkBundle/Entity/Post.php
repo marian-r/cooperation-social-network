@@ -3,7 +3,6 @@
 namespace PA036\SocialNetworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use PA036\SocialNetworkBundle\Entity\Group;
 
 /**
  * Post
@@ -59,7 +58,7 @@ class Post implements \JsonSerializable {
     private $seensCount;
 
     /**
-     * @var \Group
+     * @var Group
      *
      * @ORM\ManyToOne(targetEntity="Group")
      * @ORM\JoinColumns({
@@ -69,7 +68,7 @@ class Post implements \JsonSerializable {
     private $group;
 
     /**
-     * @var \Post
+     * @var Post
      *
      * @ORM\ManyToOne(targetEntity="Post")
      * @ORM\JoinColumns({

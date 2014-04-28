@@ -5,12 +5,12 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ConversationMembers
+ * ConversationMember
  *
  * @ORM\Table(name="conversation_members", uniqueConstraints={@ORM\UniqueConstraint(name="conversation_members_conversation_id_user_id_key", columns={"conversation_id", "user_id"})}, indexes={@ORM\Index(name="IDX_DEF6DCF59AC0396", columns={"conversation_id"}), @ORM\Index(name="IDX_DEF6DCF5A76ED395", columns={"user_id"})})
  * @ORM\Entity
  */
-class ConversationMembers
+class ConversationMember
 {
     /**
      * @var integer
@@ -23,9 +23,9 @@ class ConversationMembers
     private $memberId;
 
     /**
-     * @var \Conversations
+     * @var \Conversation
      *
-     * @ORM\ManyToOne(targetEntity="Conversations")
+     * @ORM\ManyToOne(targetEntity="Conversation")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="conversation_id", referencedColumnName="conversation_id")
      * })

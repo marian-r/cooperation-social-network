@@ -5,22 +5,22 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Conversations
+ * AttachmentType
  *
- * @ORM\Table(name="conversations")
+ * @ORM\Table(name="attachment_types")
  * @ORM\Entity
  */
-class Conversations
+class AttachmentType
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="conversation_id", type="integer", nullable=false)
+     * @ORM\Column(name="type_id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="conversations_conversation_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\SequenceGenerator(sequenceName="attachment_types_type_id_seq", allocationSize=1, initialValue=1)
      */
-    private $conversationId;
+    private $typeId;
 
     /**
      * @var string

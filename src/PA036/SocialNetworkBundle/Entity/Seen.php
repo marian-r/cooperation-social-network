@@ -5,12 +5,12 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Seens
+ * Seen
  *
  * @ORM\Table(name="seens", indexes={@ORM\Index(name="IDX_8C605574B89032C", columns={"post_id"})})
  * @ORM\Entity
  */
-class Seens
+class Seen
 {
     /**
      * @var integer

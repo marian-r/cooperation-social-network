@@ -5,12 +5,12 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Likes
+ * Like
  *
  * @ORM\Table(name="likes")
  * @ORM\Entity
  */
-class Likes
+class Like
 {
     /**
      * @var integer

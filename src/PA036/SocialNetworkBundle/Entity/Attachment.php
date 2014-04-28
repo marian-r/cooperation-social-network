@@ -5,12 +5,12 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Attachments
+ * Attachment
  *
  * @ORM\Table(name="attachments", uniqueConstraints={@ORM\UniqueConstraint(name="attachments_message_id_key", columns={"message_id"}), @ORM\UniqueConstraint(name="attachments_post_id_key", columns={"post_id"})}, indexes={@ORM\Index(name="IDX_47C4FAD6C54C8C93", columns={"type_id"})})
  * @ORM\Entity
  */
-class Attachments
+class Attachment
 {
     /**
      * @var integer

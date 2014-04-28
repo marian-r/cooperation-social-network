@@ -5,7 +5,7 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Groups
+ * Group
  *
  * @ORM\Table(name="groups", uniqueConstraints={@ORM\UniqueConstraint(name="groups_name_key", columns={"name"})})
  * @ORM\Entity
