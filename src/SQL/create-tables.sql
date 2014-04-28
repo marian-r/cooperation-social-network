@@ -57,11 +57,12 @@ CREATE TABLE "posts" (
 
 CREATE TABLE "attachments" (
   "attachment_id" SERIAL NOT NULL,
-  "post_id"       int4 UNIQUE, 
-  "message_id"    int4 UNIQUE, 
+  "post_id"       int4,
+  "message_id"    int4,
   "type_id"       int4 NOT NULL, 
   "binary_data"   bytea NOT NULL, 
-  PRIMARY KEY ("attachment_id")
+  PRIMARY KEY ("attachment_id"),
+  CHECK (("post_id" IS NOT NULL AND "message_id" IS NULL) OR  ("post_id" IS NULL AND "message_id" IS NOT NULL))
 );
 
 CREATE TABLE "likes" (
