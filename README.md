@@ -13,9 +13,10 @@ What you need to run the project:
 Steps to start web application:
 
 1. Install the web server
-2. Clone or download repository to the web directory of your web server (www, htdocs, public_html, ...).
-3. Install PostgreSQL database. Create user **postgres** with password **1234**. On Windows this can be done during setup.
-4. Run SQL script which creates tables: ```/src/SQL/create-tables.sql```
-5. Install Composer.
-6. Open terminal and move to the project directory. Then run command: ```composer update```.
-7. Open browser and run the application ```http://localhost/<path_to_app>/web/```.
+2. Make sure you have enabled apache mod_rewrite module and pdo_pgsql PHP extension
+3. Clone or download repository to the web directory of your web server (www, htdocs, public_html, ...).
+4. Install PostgreSQL database. Create user **postgres** with password **1234**. On Windows this can be done during setup.
+5. Run SQL script which creates tables: ```/src/SQL/create-tables.sql```
+6. Install Composer.
+7. Open terminal and move to the project directory. Then run command: ```composer update```.
+8. Open browser and run the application ```http://localhost/<path_to_app>/web/```.
