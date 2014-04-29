@@ -17,7 +17,14 @@ class AccountController extends Controller {
      * @Template()
      */
     public function registerAction(Request $request) {
+
         $user = new User();
+
+        //todo figure why this prints empty string?!!!
+        //echo 'Encoded password: '. $this->get('security.encoder_factory')->getEncoder($user)->encodePassword('1234', $user->getSalt());
+        //exit;
+
+
         $form = $this->createFormBuilder($user)
                 ->add('firstName', 'text')
                 ->add('lastName', 'text')
