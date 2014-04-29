@@ -30,9 +30,9 @@ class Attachment
     private $binaryData;
 
     /**
-     * @var \Posts
+     * @var \Post
      *
-     * @ORM\ManyToOne(targetEntity="Posts")
+     * @ORM\ManyToOne(targetEntity="Post")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="post_id", referencedColumnName="post_id")
      * })
@@ -40,9 +40,9 @@ class Attachment
     private $post;
 
     /**
-     * @var \AttachmentTypes
+     * @var \AttachmentType
      *
-     * @ORM\ManyToOne(targetEntity="AttachmentTypes")
+     * @ORM\ManyToOne(targetEntity="AttachmentType")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="type_id", referencedColumnName="type_id")
      * })
@@ -50,9 +50,9 @@ class Attachment
     private $type;
 
     /**
-     * @var \Messages
+     * @var \Message
      *
-     * @ORM\ManyToOne(targetEntity="Messages")
+     * @ORM\ManyToOne(targetEntity="Message")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="message_id", referencedColumnName="message_id")
      * })

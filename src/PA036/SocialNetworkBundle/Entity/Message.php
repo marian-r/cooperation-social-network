@@ -37,9 +37,9 @@ class Message
     private $timestamp;
 
     /**
-     * @var \ConversationMembers
+     * @var \ConversationMember
      *
-     * @ORM\ManyToOne(targetEntity="ConversationMembers")
+     * @ORM\ManyToOne(targetEntity="ConversationMember")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="member_id", referencedColumnName="member_id")
      * })
