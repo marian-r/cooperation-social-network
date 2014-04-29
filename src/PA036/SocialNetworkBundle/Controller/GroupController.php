@@ -53,14 +53,14 @@ class GroupController extends Controller {
      * @Template()
      */
     public function editAction(Request $request) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $group = new Group();
 
         $groupId = $request->query->get("groupId");
 
         if ($groupId != null) {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $group = $em->getRepository('PA036SocialNetworkBundle:Group')->findOneBy(array("groupId" => $groupId));
         }
 
@@ -96,7 +96,7 @@ class GroupController extends Controller {
      */
     public function removeAction(Request $request) {
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $group = $em->getRepository('PA036SocialNetworkBundle:Group')->findOneBy(array("groupId" => $request->request->get("id")));
 
         if ($request->isMethod('POST')) {
@@ -116,7 +116,7 @@ class GroupController extends Controller {
     public function myAction() {
         $username = $this->get('security.context')->getToken()->getUser()->getUsername();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $groups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyGroup($username);
 
         $response['groups'] = $groups;
@@ -130,7 +130,7 @@ class GroupController extends Controller {
     public function myAdminAction() {
         $username = $this->get('security.context')->getToken()->getUser()->getUsername();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $groups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyAdminGroup($username);
 
         $response['groups'] = $groups;
@@ -146,7 +146,7 @@ class GroupController extends Controller {
 
         $response = array();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $leave = $em->getRepository('PA036SocialNetworkBundle:Group')->leaveGroup($username, $request->query->get("groupId"));
 
         if ($leave) {

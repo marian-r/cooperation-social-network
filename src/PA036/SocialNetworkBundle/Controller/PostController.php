@@ -18,7 +18,7 @@ class PostController extends Controller {
     public function addAction(Request $request) {
         $username = $this->get('security.context')->getToken()->getUser()->getUsername();
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $user = new User();
         $user = $em->getRepository('PA036AccountBundle:User')->loadUserByUsername($username);
@@ -59,7 +59,7 @@ class PostController extends Controller {
 
                 $response['status'] = "true";
 
-                return new Response(json_encode($response));
+                return new Response(json_encode_ex($response));
 //            }
         }
         return new Response();
@@ -70,7 +70,7 @@ class PostController extends Controller {
      * @Template("PA036SocialNetworkBundle:Group:group.html.twig")
      */
     public function groupPostsAction(Request $request) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $group_id = $request->request->get("group_id");
         if (!empty($group_id)) {
@@ -92,7 +92,7 @@ class PostController extends Controller {
             }
         }
 
-        return new Response(json_encode($response));
+        return new Response(json_encode_ex($response));
     }
 
 }

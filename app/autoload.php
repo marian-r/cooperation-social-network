@@ -1,8 +1,6 @@
 <?php
 
-if (PHP_VERSION_ID < 50400) {
-    require_once('../src/php5-3/interface.php');
-}
+require_once('../src/php5-3/compatibility.php');
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;
