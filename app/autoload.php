@@ -1,7 +1,6 @@
 <?php
 
 if (PHP_VERSION_ID < 50400) {
-    require_once('../src/php5-3/password.php');
     require_once('../src/php5-3/interface.php');
 }
 
