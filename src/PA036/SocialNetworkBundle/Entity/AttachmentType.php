@@ -3,31 +3,46 @@
 namespace PA036\SocialNetworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * AttachmentType
- *
  * @ORM\Table(name="attachment_types")
  * @ORM\Entity
  */
 class AttachmentType
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="attachment_types_type_id_seq", allocationSize=1, initialValue=1)
-     */
-    private $typeId;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="type_id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $typeId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=50, nullable=false)
+	 * @Assert\NotBlank()
+	 */
+	private $name;
 
 
+	public final function getTypeId()
+	{
+		return $this->typeId;
+	}
+
+
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+
+	public function getName()
+	{
+		return $this->name;
+	}
 }

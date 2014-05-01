@@ -2,13 +2,15 @@
 
 namespace PA036\AccountBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use PA036\SocialNetworkBundle\Entity\UserGroupMap;
+use PA036\SocialNetworkBundle\Entity\Post;
 
 /**
- * User
- *
  * @ORM\Table(name="users", uniqueConstraints={@ORM\UniqueConstraint(name="users_email_key", columns={"email"})})
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="PA036\AccountBundle\Entity\UserRepository")
@@ -20,8 +22,7 @@ class User implements UserInterface, \Serializable {
      *
      * @ORM\Column(name="user_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="users_user_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $userId;
 
@@ -73,50 +74,19 @@ class User implements UserInterface, \Serializable {
     private $description;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection|UserGroupMap[]
      *
-     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Group", inversedBy="user")
-     * @ORM\JoinTable(name="user_group_map",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="group_id", referencedColumnName="group_id")
-     *   }
-     * )
+     * @ORM\OneToMany(targetEntity="\PA036\SocialNetworkBundle\Entity\UserGroupMap", mappedBy="user")
      */
-    private $group;
+    private $groupMaps;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="PA036\SocialNetworkBundle\Entity\Post", inversedBy="user")
-     * @ORM\JoinTable(name="likes",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="user_id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="post_id", referencedColumnName="post_id")
-     *   }
-     * )
-     */
-    private $post;
-
-    /*
-     * Other vars
-     */
     private $salt;
     private $isActive;
 
-    /**
-     * Constructor
-     */
     public function __construct() {
-        $this->group = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->post = new \Doctrine\Common\Collections\ArrayCollection();
-        
+        $this->groupsMaps = new ArrayCollection();
+
         $this->salt = '%%#$gfd9dg#fdg$8564%d$';
-        
         $this->isActive = true;
     }
 
@@ -164,12 +134,8 @@ class User implements UserInterface, \Serializable {
                 ) = unserialize($serialized);
     }
 
-    public function getUserId() {
+    public final function getUserId() {
         return $this->userId;
-    }
-
-    public function setUserId($userId) {
-        $this->userId = $userId;
     }
 
     public function getEmail() {
@@ -212,20 +178,12 @@ class User implements UserInterface, \Serializable {
         $this->description = $description;
     }
 
-    public function getGroup() {
-        return $this->group;
+    public function getGroupMaps() {
+         $this->groupMaps;
     }
 
-    public function setGroup(\Doctrine\Common\Collections\Collection $group) {
-        $this->group = $group;
-    }
-
-    public function getPost() {
-        return $this->post;
-    }
-
-    public function setPost(\Doctrine\Common\Collections\Collection $post) {
-        $this->post = $post;
+    public function setGroupMaps(Collection $groupMaps) {
+        $this->groupMaps = $groupMaps;
     }
 
     public function getIsActive() {
@@ -235,5 +193,4 @@ class User implements UserInterface, \Serializable {
     public function setIsActive($isActive) {
         $this->isActive = $isActive;
     }
-
 }

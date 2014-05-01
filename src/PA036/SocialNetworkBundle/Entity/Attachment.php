@@ -5,9 +5,7 @@ namespace PA036\SocialNetworkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Attachment
- *
- * @ORM\Table(name="attachments", uniqueConstraints={@ORM\UniqueConstraint(name="attachments_message_id_key", columns={"message_id"}), @ORM\UniqueConstraint(name="attachments_post_id_key", columns={"post_id"})}, indexes={@ORM\Index(name="IDX_47C4FAD6C54C8C93", columns={"type_id"})})
+ * @ORM\Table(name="attachments", indexes={@ORM\Index(name="IDX_47C4FAD6C54C8C93", columns={"type_id"})})
  * @ORM\Entity
  */
 class Attachment
@@ -17,8 +15,7 @@ class Attachment
      *
      * @ORM\Column(name="attachment_id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="attachments_attachment_id_seq", allocationSize=1, initialValue=1)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $attachmentId;
 
@@ -30,34 +27,83 @@ class Attachment
     private $binaryData;
 
     /**
-     * @var \Post
+     * @var Post
      *
-     * @ORM\ManyToOne(targetEntity="Post")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="post_id", referencedColumnName="post_id")
-     * })
+     * @ORM\ManyToOne(targetEntity="Post", inversedBy="attachments")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="post_id")
      */
     private $post;
 
+	/**
+	 * @var Message
+	 *
+	 * @ORM\ManyToOne(targetEntity="Message", inversedBy="attachments")
+	 * @ORM\JoinColumn(name="message_id", referencedColumnName="message_id")
+	 */
+	private $message;
+
     /**
-     * @var \AttachmentType
+     * @var AttachmentType
      *
      * @ORM\ManyToOne(targetEntity="AttachmentType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="type_id", referencedColumnName="type_id")
-     * })
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="type_id")
      */
     private $type;
 
-    /**
-     * @var \Message
-     *
-     * @ORM\ManyToOne(targetEntity="Message")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="message_id", referencedColumnName="message_id")
-     * })
-     */
-    private $message;
+
+	public final function getAttachmentId()
+	{
+		return $this->attachmentId;
+	}
 
 
+	public function setBinaryData($binaryData)
+	{
+		$this->binaryData = $binaryData;
+	}
+
+
+	public function getBinaryData()
+	{
+		return $this->binaryData;
+	}
+
+
+	public function setMessage(Message $message = NULL)
+	{
+		$this->message = $message;
+	}
+
+
+	/** @return Message */
+	public function getMessage()
+	{
+		return $this->message;
+	}
+
+
+	public function setPost(Post $post = NULL)
+	{
+		$this->post = $post;
+	}
+
+
+	/** @return Post */
+	public function getPost()
+	{
+		return $this->post;
+	}
+
+
+	public function setType(AttachmentType $type)
+	{
+		$this->type = $type;
+	}
+
+
+	/** @return AttachmentType */
+	public function getType()
+	{
+		return $this->type;
+	}
 }
