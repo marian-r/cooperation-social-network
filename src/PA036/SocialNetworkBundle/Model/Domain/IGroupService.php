@@ -41,11 +41,4 @@ interface IGroupService
 	 * @return void
 	 */
 	function leaveGroup(Group $group, User $user);
-
-
-	/**
-	 * @param User $user
-	 * @return Group[]
-	 */
-	function findGroupsByUser(User $user);
 } 
