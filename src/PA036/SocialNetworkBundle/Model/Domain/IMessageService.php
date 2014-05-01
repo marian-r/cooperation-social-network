@@ -37,4 +37,11 @@ interface IMessageService
 	 * @return Message
 	 */
 	function sendMessage(User $user, Conversation $conversation, $messageBody, $files = array());
+
+
+	/**
+	 * @param Conversation $conversation
+	 * @return Message[]
+	 */
+	function findMessagesByConversation(Conversation $conversation);
 }
