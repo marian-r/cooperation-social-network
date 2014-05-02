@@ -1,6 +1,6 @@
 <?php
 
-require_once('../src/php5-3/compatibility.php');
+require_once(__DIR__.'/../src/php5-3/compatibility.php');
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Composer\Autoload\ClassLoader;

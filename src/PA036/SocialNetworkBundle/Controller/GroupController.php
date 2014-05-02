@@ -20,10 +20,7 @@ class GroupController extends Controller {
      * @Template()
      */
     public function addAction(Request $request) {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
-
-        $em = $this->getDoctrine()->getManager();
-
+        $user = $this->get('security.context')->getToken()->getUser();
         $group = new Group();
         $form = $this->createFormBuilder($group)
                 ->add('name', 'text')
@@ -36,7 +33,9 @@ class GroupController extends Controller {
         if ($request->isMethod('POST')) {
             if ($form->isValid()) {
                 $group = $form->getData();
-                if ($em->getRepository('PA036SocialNetworkBundle:Group')->addGroup($group, $username)) {
+                $service = $this->get('pa036_social_network.service.group');
+
+                if ($service->addGroup($group, $user)) {
                     $response['status'] = "true";
                 } else {
                     $response['status'] = "false";
