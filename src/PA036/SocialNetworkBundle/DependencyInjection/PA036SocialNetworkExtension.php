@@ -26,7 +26,6 @@ class PA036SocialNetworkExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-     //   $container->setParameter('pa036_social_network.service.em', $container->get );
     }
 
 

@@ -26,7 +26,7 @@ class GroupService extends BaseService implements IGroupService
 
         $query = $this->entityManager->createNativeQuery('select create_group( :admin_id, :members, :name, :description)', $rsm);
         $query->setParameter(":admin_id", $user->getUserId());
-        $query->setParameter(":members", "{" . implode(",", array($user->getUserId())) . "}");
+        $query->setParameter(":members", "{" . $user->getUserId() . "}");
         $query->setParameter(":name", $group->getName());
         $query->setParameter(":description", $group->getDescription());
 
@@ -39,7 +39,7 @@ class GroupService extends BaseService implements IGroupService
      */
     function saveGroup(Group $group)
     {
-
+        $this->entityManager->persist($group);
     }
 
     /**
@@ -49,7 +49,13 @@ class GroupService extends BaseService implements IGroupService
      */
     function joinGroup(Group $group, User $user)
     {
-        // TODO: Implement joinGroup() method.
+        $rsm = new ResultSetMapping();
+
+        $query = $this->entityManager->createNativeQuery('select add_member( :group_id, :user_id)', $rsm);
+        $query->setParameter(":group_id", $group->getGroupId());
+        $query->setParameter(":user_id", $user->getUserId());
+
+        $group = $query->getResult();
     }
 
     /**
@@ -59,6 +65,12 @@ class GroupService extends BaseService implements IGroupService
      */
     function leaveGroup(Group $group, User $user)
     {
-        // TODO: Implement leaveGroup() method.
+        $rsm = new ResultSetMapping();
+
+        $query = $this->entityManager->createNativeQuery('select delete_member( :group_id, :user_id)', $rsm);
+        $query->setParameter(":group_id", $group->getGroupId());
+        $query->setParameter(":user_id", $user->getUserId());
+
+        $group = $query->getResult();
     }
 }
