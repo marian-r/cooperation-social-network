@@ -2,7 +2,7 @@
 
 namespace PA036\SocialNetworkBundle\Model\Domain;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager ;
 
 /**
  * 
@@ -10,11 +10,11 @@ use Doctrine\ORM\EntityManager;
  */
 abstract class BaseService
 {
-	/** @var EntityManager */
+	/** @var ObjectManager */
 	protected $entityManager;
 
 
-	public function __construct(EntityManager $entityManager)
+	public function __construct(ObjectManager $entityManager)
 	{
 		$this->entityManager = $entityManager;
 	}

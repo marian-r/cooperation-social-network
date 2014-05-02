@@ -24,13 +24,19 @@ class GroupService extends BaseService implements IGroupService
     {
         $rsm = new ResultSetMapping();
 
-        $query = $this->entityManager->createNativeQuery('select create_group( :admin_id, :members, :name, :description)', $rsm);
+        $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Group', 'g');
+        $rsm->addFieldResult('g', 'group_id', 'groupId');
+        $rsm->addFieldResult('g', 'name', 'name');
+        $rsm->addFieldResult('g', 'description', 'description');
+
+        $query = $this->entityManager->createNativeQuery('select * from create_group( :admin_id, :members, :name, :description)', $rsm);
         $query->setParameter(":admin_id", $user->getUserId());
         $query->setParameter(":members", "{" . $user->getUserId() . "}");
         $query->setParameter(":name", $group->getName());
         $query->setParameter(":description", $group->getDescription());
 
-        return $query->getResult();
+        $groups =  $query->getResult();
+        return count($groups) ? $groups[0] : null;
     }
 
     /**
