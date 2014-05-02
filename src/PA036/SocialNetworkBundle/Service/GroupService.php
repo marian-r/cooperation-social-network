@@ -85,7 +85,7 @@ class GroupService extends BaseService implements IGroupService
         $rsm = new ResultSetMapping();
 
         $query = $this->entityManager->createNativeQuery(
-            'select delete_member( :group_id, :user_id)',
+            'select *from delete_member( :group_id, :user_id)',
             $this->createGroupMapping()
         );
         $query->setParameter(":group_id", $group->getGroupId());

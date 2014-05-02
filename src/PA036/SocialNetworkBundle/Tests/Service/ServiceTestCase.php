@@ -7,17 +7,22 @@
 
 namespace PA036\SocialNetworkBundle\Tests\Service;
 
+use Doctrine\Common\Persistence\ObjectManager;
+
 abstract class ServiceTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {
 
-    protected $_em;
+    /**
+     * @var ObjectManager
+     */
+    protected $entityManager;
 
     protected function setUp()
     {
         $kernel = static::createKernel();
         $kernel->boot();
-        $this->_em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
-        $this->_em->beginTransaction();
+        $this->entityManager = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->entityManager->beginTransaction();
     }
 
     /**
@@ -25,7 +30,7 @@ abstract class ServiceTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebT
      */
     public function tearDown()
     {
-        $this->_em->rollback();
+        $this->entityManager->rollback();
     }
 
 
