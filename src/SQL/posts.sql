@@ -2,7 +2,7 @@
 -- SQL for managing posts
 -- *************************
 
-CREATE OR REPLACE FUNCTION save_post(parent_id int, group_id int, user_id int, text varchar) RETURNS posts AS $$
+CREATE OR REPLACE FUNCTION add_post(parent_id int, group_id int, user_id int, text varchar) RETURNS posts AS $$
 DECLARE
   post posts%ROWTYPE;
 BEGIN

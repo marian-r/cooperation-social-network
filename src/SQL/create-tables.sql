@@ -74,7 +74,7 @@ CREATE TABLE "likes" (
 
 CREATE TABLE "conversations" (
   "conversation_id" SERIAL NOT NULL,
-  "name"            varchar(50) NOT NULL, 
+  "name"            varchar(50),
   PRIMARY KEY ("conversation_id")
 );
 

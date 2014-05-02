@@ -14,3 +14,19 @@ BEGIN
   RETURN like;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE FUNCTION update_likes() RETURNS TRIGGER AS $_$
+BEGIN
+  UPDATE posts
+  SET likes_count=likes_count + 1
+  WHERE posts.post_id=NEW.post_id;
+    RETURN NEW;
+
+
+END $_$ LANGUAGE 'plpgsql';
+
+
+CREATE TRIGGER like_added
+AFTER INSERT ON likes
+FOR EACH ROW EXECUTE PROCEDURE update_likes();
