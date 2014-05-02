@@ -7,13 +7,13 @@
 
 namespace PA036\SocialNetworkBundle\Tests\Service;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 
 abstract class ServiceTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {
 
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
     protected $entityManager;
 
