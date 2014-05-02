@@ -22,4 +22,8 @@ class UserControllerTest extends WebTestCase
     }
 
     */
+    public function testIndex()
+    {
+
+    }
 }
