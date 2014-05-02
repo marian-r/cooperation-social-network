@@ -4,7 +4,7 @@
  * Date: 2.5.2014
  * Time: 16:26
  */
-namespace PA036\SocialNetworkBundle\Services;
+namespace PA036\SocialNetworkBundle\Service;
 
 use \PA036\SocialNetworkBundle\Model\Domain\BaseService;
 use PA036\AccountBundle\Entity\User;
