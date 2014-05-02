@@ -26,7 +26,9 @@ class PostService  extends BaseService implements IPostService
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Post', 'p');
         $rsm->addFieldResult('p', 'post_id', 'postId');
+        $rsm->addFieldResult('p', 'text', 'text');
 
+        $rsm->addMetaResult('p', 'group_id', 'group_id');
         return $rsm;
     }
 
