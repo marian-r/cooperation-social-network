@@ -15,13 +15,7 @@ use \PA036\SocialNetworkBundle\Model\Domain\IGroupService;
 class GroupService extends BaseService implements IGroupService
 {
 
-    /**
-     * @param Group $group
-     * @param User $user
-     * @return Group
-     */
-    function addGroup(Group $group, User $user)
-    {
+    private function createGroupMapping(){
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Group', 'g');
@@ -29,7 +23,21 @@ class GroupService extends BaseService implements IGroupService
         $rsm->addFieldResult('g', 'name', 'name');
         $rsm->addFieldResult('g', 'description', 'description');
 
-        $query = $this->entityManager->createNativeQuery('select * from create_group( :admin_id, :members, :name, :description)', $rsm);
+        return $rsm;
+    }
+
+    /**
+     * @param Group $group
+     * @param User $user
+     * @return Group
+     */
+    function addGroup(Group $group, User $user)
+    {
+
+        $query = $this->entityManager->createNativeQuery(
+            'select * from create_group( :admin_id, :members, :name, :description)',
+            $this->createGroupMapping()
+        );
         $query->setParameter(":admin_id", $user->getUserId());
         $query->setParameter(":members", "{" . $user->getUserId() . "}");
         $query->setParameter(":name", $group->getName());
@@ -57,7 +65,10 @@ class GroupService extends BaseService implements IGroupService
     {
         $rsm = new ResultSetMapping();
 
-        $query = $this->entityManager->createNativeQuery('select add_member( :group_id, :user_id)', $rsm);
+        $query = $this->entityManager->createNativeQuery(
+            'select *from add_member( :group_id, :user_id)',
+            $this->createGroupMapping()
+        );
         $query->setParameter(":group_id", $group->getGroupId());
         $query->setParameter(":user_id", $user->getUserId());
 
@@ -73,7 +84,10 @@ class GroupService extends BaseService implements IGroupService
     {
         $rsm = new ResultSetMapping();
 
-        $query = $this->entityManager->createNativeQuery('select delete_member( :group_id, :user_id)', $rsm);
+        $query = $this->entityManager->createNativeQuery(
+            'select delete_member( :group_id, :user_id)',
+            $this->createGroupMapping()
+        );
         $query->setParameter(":group_id", $group->getGroupId());
         $query->setParameter(":user_id", $user->getUserId());
 
