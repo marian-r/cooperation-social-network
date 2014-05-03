@@ -22,13 +22,19 @@ use PA036\SocialNetworkBundle\Entity\Post;
 class PostService  extends BaseService implements IPostService
 {
     private function createPostMapping(){
-        //todo finish mapping
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Post', 'p');
         $rsm->addFieldResult('p', 'post_id', 'postId');
         $rsm->addFieldResult('p', 'text', 'text');
+        $rsm->addFieldResult('p', 'group_id', 'groupId');
+        $rsm->addFieldResult('p', 'likes_count', 'likesCount');
+        $rsm->addFieldResult('p', 'seens_count', 'seensCount');
+        $rsm->addFieldResult('p', 'timestamp', 'timestamp');
 
+
+        $rsm->addMetaResult('p', 'user_id', 'user_id');
+        $rsm->addMetaResult('p', 'post_id', 'post_id');
         $rsm->addMetaResult('p', 'group_id', 'group_id');
         return $rsm;
     }
