@@ -4,6 +4,9 @@ namespace PA036\SocialNetworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use PA036\AccountBundle\Entity\User;
+use PA036\SocialNetworkBundle\Entity\Message;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Table(name="conversation_members")
@@ -37,6 +40,12 @@ class ConversationMember
 	 */
 	private $user;
 
+    /**
+     * @var Collection|Message[]
+     *
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="member")
+     */
+    private $messages;
 
 	public final function getMemberId()
 	{
@@ -56,4 +65,9 @@ class ConversationMember
 	{
 		return $this->user;
 	}
+
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 }

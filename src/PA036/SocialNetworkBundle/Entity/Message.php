@@ -39,7 +39,7 @@ class Message
     private $timestamp;
 
     /**
-     * @var User
+     * @var ConversationMember
      *
      * @ORM\OneToOne(targetEntity="ConversationMember")
      * @ORM\JoinColumn(name="member_id", referencedColumnName="member_id")
@@ -50,10 +50,10 @@ class Message
     /**
      * @var Conversation
      *
-     * @ORM\OneToOne(targetEntity="ConversationMember")
-     * @ORM\JoinColumn(name="conversation_id", referencedColumnName="conversation_id")
+     * @ORM\OneToOne(targetEntity="Conversation")
+     * @ORM\JoinColumn(name="member_id", referencedColumnName="conversation_id")
      */
-    private $conversation;
+    //private $conversation;
 
 	/**
 	 * @var Collection|Attachment[]
@@ -101,7 +101,7 @@ class Message
 	}
 
 
-	/** @return User */
+	/** @return ConversationMember */
 	public function getMember()
 	{
 		return $this->member;

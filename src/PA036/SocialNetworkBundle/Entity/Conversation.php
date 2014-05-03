@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use PA036\AccountBundle\Entity\User;
+use PA036\SocialNetworkBundle\Entity\Message;
 
 /**
  * @ORM\Table(name="conversations")
@@ -32,12 +33,11 @@ class Conversation
 	private $name;
 
 	/**
-	 * @var Collection|User[]
+	 * @var Collection|ConversationMember[]
 	 *
 	 * @ORM\OneToMany(targetEntity="ConversationMember", mappedBy="conversation")
 	 */
 	private $members;
-
 
 	public function __construct()
 	{
@@ -63,9 +63,13 @@ class Conversation
 	}
 
 
-    /** @var Collection|User[] */
+    /** @var Collection|ConversationMember[]
+     * @return \Doctrine\Common\Collections\ArrayCollection|ConversationMember[]
+     */
 	public function getMembers()
 	{
 		return $this->members;
 	}
+
+
 }

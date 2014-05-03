@@ -20,26 +20,24 @@ class MessageService extends BaseService implements IMessageService
 
     private function createMessageMapping()
     {
-        //todo finish mapping
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Message', 'm');
-        ///  $rsm->addFieldResult('p', 'post_id', 'postId');
-//        $rsm->addFieldResult('p', 'text', 'text');
+        $rsm->addFieldResult('m', 'message_id', 'messageId');
+        $rsm->addFieldResult('m', 'body', 'body');
+        $rsm->addFieldResult('m', 'timestamp', 'timestamp');
+        $rsm->addMetaResult('m', 'member_id', 'member_id');
 
-//        $rsm->addMetaResult('p', 'group_id', 'group_id');
         return $rsm;
     }
 
     private function createConversationMapping()
     {
-        //todo finish mapping
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Conversation', 'c');
         $rsm->addFieldResult('c', 'conversation_id', 'conversationId');
         $rsm->addFieldResult('c', 'name', 'name');
-
         $rsm->addMetaResult('c', 'conversation_id', 'conversation_id');
         return $rsm;
     }
@@ -86,16 +84,16 @@ class MessageService extends BaseService implements IMessageService
         }
 
         $query = array();
-        $params = new ArrayCollection();
+        $params = array(':conversation_id' => $conversation->getConversationId());
 
         foreach ($users as $index => $user) {
             $user_id_param = ':user_id_' . $index;
             $query[] = "(:conversation_id, $user_id_param )";
-            $params->set($user_id_param, $user->getUserId());
+            $params[$user_id_param] = $user->getUserId();
         }
 
         $query = $this->entityManager->createNativeQuery(
-            'INSERT INTO `conversation_members` (conversation_id, user_id) VALUES ' . implode(", ", $query),
+            'INSERT INTO conversation_members (conversation_id, user_id) VALUES ' . implode(", ", $query),
             new ResultSetMapping()
         );
         $query->setParameters($params);
@@ -129,11 +127,12 @@ class MessageService extends BaseService implements IMessageService
      */
     function findMessagesByConversation(Conversation $conversation)
     {
-        return
-            $this->entityManager->getRepository('PA036\SocialNetworkBundle\Entity\Message')->findBy(
-                array(
-                    'Conversation' => $conversation ? $conversation->getConversationId() : null
-                )
-            );
+        $messages = array();
+        foreach($conversation->getMembers() as $member){
+            foreach($member->getMessages() as $message){
+                $messages[] = $message;
+            }
+        }
+        return $messages;
     }
 }
