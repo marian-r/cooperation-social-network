@@ -3,7 +3,6 @@
 namespace PA036\SocialNetworkBundle\Service;
 
 use PA036\SocialNetworkBundle\Model\Domain\BaseService;
-use Doctrine\Common\Collections\ArrayCollection;
 use PA036\SocialNetworkBundle\Entity\Conversation;
 use PA036\SocialNetworkBundle\Entity\Message;
 use PA036\AccountBundle\Entity\User;
@@ -128,8 +127,8 @@ class MessageService extends BaseService implements IMessageService
     function findMessagesByConversation(Conversation $conversation)
     {
         $messages = array();
-        foreach($conversation->getMembers() as $member){
-            foreach($member->getMessages() as $message){
+        foreach ($conversation->getMembers() as $member) {
+            foreach ($member->getMessages() as $message) {
                 $messages[] = $message;
             }
         }

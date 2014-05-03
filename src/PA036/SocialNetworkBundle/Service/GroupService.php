@@ -15,7 +15,8 @@ use \PA036\SocialNetworkBundle\Model\Domain\IGroupService;
 class GroupService extends BaseService implements IGroupService
 {
 
-    private function createGroupMapping(){
+    private function createGroupMapping()
+    {
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Group', 'g');

@@ -17,17 +17,15 @@ use PA036\AccountBundle\Entity\User;
 use PA036\SocialNetworkBundle\Entity\Group;
 use PA036\SocialNetworkBundle\Entity\Post;
 
-
-
-class PostService  extends BaseService implements IPostService
+class PostService extends BaseService implements IPostService
 {
-    private function createPostMapping(){
+    private function createPostMapping()
+    {
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Post', 'p');
         $rsm->addFieldResult('p', 'post_id', 'postId');
         $rsm->addFieldResult('p', 'text', 'text');
-        $rsm->addFieldResult('p', 'group_id', 'groupId');
         $rsm->addFieldResult('p', 'likes_count', 'likesCount');
         $rsm->addFieldResult('p', 'seens_count', 'seensCount');
         $rsm->addFieldResult('p', 'timestamp', 'timestamp');

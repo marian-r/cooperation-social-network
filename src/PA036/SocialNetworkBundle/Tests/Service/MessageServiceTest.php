@@ -6,13 +6,9 @@
  */
 namespace PA036\SocialNetworkBundle\Tests\Service;
 
-use PA036\SocialNetworkBundle\Service\PostService;
-use PA036\SocialNetworkBundle\Entity\ConversationMember;
 use PA036\SocialNetworkBundle\Entity\Conversation;
 use PA036\SocialNetworkBundle\Service\MessageService;
-use PA036\SocialNetworkBundle\Entity\Group;
 use PA036\AccountBundle\Entity\User;
-use PA036\SocialNetworkBundle\Entity\Post;
 
 class MessageServiceTest extends ServiceTestCase
 {

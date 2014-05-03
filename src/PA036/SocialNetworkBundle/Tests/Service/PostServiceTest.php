@@ -14,17 +14,6 @@ use PA036\SocialNetworkBundle\Entity\Post;
 
 class PostServiceTest extends ServiceTestCase{
 
-    /**
-    function testFilter(){
-        $entityManager = $this->entityManager;
-        $service = new PostService($entityManager);
-        $posts = $service->findPostsByGroup($entityManager->find('PA036\SocialNetworkBundle\Entity\Group', 1));
-        $this->assertEquals(1, count($posts));
-    }
-    */
-
-
-
     public function testAddPost(){
         $entityManager = $this->entityManager;
 
