@@ -2,5 +2,5 @@
 /app/.src/
 /app/logs/
 /app/cache/
-/nbproject/private/
+/nbproject
 /vendor
