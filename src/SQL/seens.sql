@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 
   INSERT INTO seens (user_id, post_id, "timestamp")
-  VALUES (user_id, post_id, NOW()) RETURNING * INTO seen;
+  VALUES (user_id, post_id, cast (NOW() as timestamp(0))) RETURNING * INTO seen;
 
   RETURN seen;
 END;

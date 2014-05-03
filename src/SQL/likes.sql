@@ -9,7 +9,7 @@ DECLARE
 BEGIN
 
   INSERT INTO likes (user_id, post_id, "timestamp")
-  VALUES (user_id, post_id, NOW()) RETURNING * INTO like;
+  VALUES (user_id, post_id, cast (NOW() as timestamp(0))) RETURNING * INTO like;
 
   RETURN like;
 END;

@@ -21,7 +21,7 @@ BEGIN
   INSERT INTO conversation_members (conversation_id, user_id)
     VALUES (con_id, user_id) RETURNING member_id INTO mem_id;
 
-  INSERT INTO messages (member_id, body, "timestamp") VALUES (mem_id, message_body, NOW());
+  INSERT INTO messages (member_id, body, "timestamp") VALUES (mem_id, message_body, cast (NOW() as timestamp(0)));
 
   RETURN conversation;
 END;
@@ -42,7 +42,7 @@ BEGIN
   INTO mem_id;
 
 
-  INSERT INTO messages (member_id, body, "timestamp") VALUES (mem_id, message_body, NOW()) RETURNING * INTO message;
+  INSERT INTO messages (member_id, body, "timestamp") VALUES (mem_id, message_body, cast (NOW() as timestamp(0))) RETURNING * INTO message;
 
   RETURN message;
 END;

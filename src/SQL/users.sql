@@ -8,7 +8,7 @@ DECLARE
 BEGIN
 
   INSERT INTO users (email, first_name, last_name, "password", last_login, description)
-  VALUES (email, first_name, last_name, my_password, NOW(), description) RETURNING * INTO my_user;
+  VALUES (email, first_name, last_name, my_password, cast (NOW() as timestamp(0)), description) RETURNING * INTO my_user;
 
   RETURN my_user;
 END;
