@@ -5,18 +5,18 @@
 
 CREATE OR REPLACE FUNCTION add_like(user_id int, post_id int) RETURNS likes AS $$
 DECLARE
-  like likes%ROWTYPE;
+  like_row likes%ROWTYPE;
 BEGIN
 
   INSERT INTO likes (user_id, post_id, "timestamp")
-  VALUES (user_id, post_id, cast (NOW() as timestamp(0))) RETURNING * INTO like;
+  VALUES (user_id, post_id, cast (NOW() as timestamp(0))) RETURNING * INTO like_row;
 
-  RETURN like;
+  RETURN like_row;
 END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION update_likes() RETURNS TRIGGER AS $_$
+CREATE OR REPLACE FUNCTION update_likes() RETURNS TRIGGER AS $$
 BEGIN
   UPDATE posts
   SET likes_count=likes_count + 1
@@ -24,7 +24,8 @@ BEGIN
     RETURN NEW;
 
 
-END $_$ LANGUAGE 'plpgsql';
+END;
+$$ LANGUAGE plpgsql;
 
 
 DROP TRIGGER IF EXISTS like_added ON likes;
