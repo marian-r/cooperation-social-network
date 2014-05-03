@@ -24,7 +24,7 @@ CREATE TABLE "users" (
   "first_name"  varchar(50) NOT NULL, 
   "last_name"   varchar(50) NOT NULL, 
   "password"    varchar(255) NOT NULL, 
-  "last_login"  timestamp NOT NULL, 
+  "last_login"  timestamp(0) NOT NULL,
   "description" text, 
   PRIMARY KEY ("user_id")
 );
@@ -49,7 +49,7 @@ CREATE TABLE "posts" (
   "group_id"    int4, 
   "user_id"     int4 NOT NULL, 
   "text"        text NOT NULL, 
-  "timestamp"   timestamp NOT NULL, 
+  "timestamp"   timestamp(0) NOT NULL,
   "likes_count" int4 NOT NULL, 
   "seens_count" int4 NOT NULL, 
   PRIMARY KEY ("post_id")
@@ -68,7 +68,7 @@ CREATE TABLE "attachments" (
 CREATE TABLE "likes" (
   "user_id"   int4 NOT NULL, 
   "post_id"   int4 NOT NULL, 
-  "timestamp" timestamp NOT NULL, 
+  "timestamp" timestamp(0) NOT NULL,
   PRIMARY KEY ("user_id", "post_id")
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE "messages" (
   "message_id" SERIAL NOT NULL,
   "member_id"  int4 NOT NULL, 
   "body"       text NOT NULL, 
-  "timestamp"  timestamp NOT NULL, 
+  "timestamp"  timestamp(0) NOT NULL,
   PRIMARY KEY ("message_id")
 );
 
@@ -103,7 +103,7 @@ CREATE TABLE "attachment_types" (
 CREATE TABLE "seens" (
   "user_id"   int4 NOT NULL, 
   "post_id"   int4 NOT NULL, 
-  "timestamp" timestamp NOT NULL, 
+  "timestamp" timestamp(0) NOT NULL,
   PRIMARY KEY ("user_id", "post_id")
 );
 
