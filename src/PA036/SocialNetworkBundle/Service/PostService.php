@@ -22,6 +22,7 @@ use PA036\SocialNetworkBundle\Entity\Post;
 class PostService  extends BaseService implements IPostService
 {
     private function createPostMapping(){
+        //todo finish mapping
         $rsm = new ResultSetMapping();
 
         $rsm->addEntityResult('PA036\SocialNetworkBundle\Entity\Post', 'p');
@@ -49,8 +50,7 @@ class PostService  extends BaseService implements IPostService
         $query->setParameter(":user_id", $user->getUserId());
         $query->setParameter(":text", $text);
 
-        $posts =  $query->getResult();
-        return count($posts) ? $posts[0] : null;
+        return $query->getSingleResult();
     }
 
     /**
@@ -81,8 +81,7 @@ class PostService  extends BaseService implements IPostService
         $query->setParameter(":user_id", $user->getUserId());
         $query->setParameter(":text", $comment);
 
-        $posts =  $query->getResult();
-        return count($posts) ? $posts[0] : null;
+        return $query->getSingleResult();
     }
 
     /**

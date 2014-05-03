@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use PA036\AccountBundle\Entity\User;
+use PA036\SocialNetworkBundle\Entity\Conversation;
 
 /**
  * @ORM\Table(name="messages", indexes={@ORM\Index(name="IDX_DB021E967597D3FE", columns={"member_id"})})
@@ -44,6 +45,15 @@ class Message
      * @ORM\JoinColumn(name="member_id", referencedColumnName="member_id")
      */
     private $member;
+
+
+    /**
+     * @var Conversation
+     *
+     * @ORM\OneToOne(targetEntity="ConversationMember")
+     * @ORM\JoinColumn(name="conversation_id", referencedColumnName="conversation_id")
+     */
+    private $conversation;
 
 	/**
 	 * @var Collection|Attachment[]
@@ -103,4 +113,14 @@ class Message
 	{
 		return $this->attachments;
 	}
+
+    /**
+     * @return Conversation
+     */
+    public function getConversation()
+    {
+        return $this->conversation;
+    }
+
+
 }

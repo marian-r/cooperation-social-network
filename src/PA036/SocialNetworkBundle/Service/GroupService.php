@@ -43,8 +43,7 @@ class GroupService extends BaseService implements IGroupService
         $query->setParameter(":name", $group->getName());
         $query->setParameter(":description", $group->getDescription());
 
-        $groups =  $query->getResult();
-        return count($groups) ? $groups[0] : null;
+        return $query->getSingleResult();
     }
 
     /**
@@ -72,7 +71,7 @@ class GroupService extends BaseService implements IGroupService
         $query->setParameter(":group_id", $group->getGroupId());
         $query->setParameter(":user_id", $user->getUserId());
 
-        $group = $query->getResult();
+        $group = $query->getSingleResult();
     }
 
     /**
