@@ -16,7 +16,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION update_likes() RETURNS TRIGGER AS $_$
+CREATE OR REPLACE FUNCTION update_likes() RETURNS TRIGGER AS $_$
 BEGIN
   UPDATE posts
   SET likes_count=likes_count + 1
@@ -26,6 +26,8 @@ BEGIN
 
 END $_$ LANGUAGE 'plpgsql';
 
+
+DROP TRIGGER IF EXISTS like_added ON likes;
 
 CREATE TRIGGER like_added
 AFTER INSERT ON likes

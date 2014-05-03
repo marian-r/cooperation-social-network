@@ -15,7 +15,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION update_seens() RETURNS TRIGGER AS $_$
+CREATE OR REPLACE FUNCTION update_seens() RETURNS TRIGGER AS $_$
 BEGIN
   UPDATE posts
   SET seens_count=seens_count + 1
@@ -25,6 +25,8 @@ BEGIN
 
 END $_$ LANGUAGE 'plpgsql';
 
+
+DROP TRIGGER IF EXISTS seen_added ON seens;
 
 CREATE TRIGGER seen_added
 AFTER INSERT ON seens
