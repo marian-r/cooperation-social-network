@@ -20,3 +20,9 @@ Steps to start web application:
 6. Install Composer.
 7. Open terminal and move to the project directory. Then run command: ```composer update```.
 8. Open browser and run the application ```http://localhost/<path_to_app>/web/```.
+
+##How to run tests
+
+1. Download [PHPUnit](http://phpunit.de/#download)
+2. Run all tests ```php <path_to_php_unit>/phpunit.phar -c <path_to_app>/app```
+
