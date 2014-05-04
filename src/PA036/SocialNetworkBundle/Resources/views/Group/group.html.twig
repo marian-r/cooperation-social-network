@@ -71,7 +71,7 @@
         {% endif %}
         //$('#group .loading').show();
 
-        $.post("{{ path('posts') }}", { group_id: groupId })
+        $.post("{{ path('posts') }}", {group_id: groupId})
                 .done(function(data) {
             var response = jQuery.parseJSON(data);
 
@@ -99,6 +99,7 @@
                 }
 
                 $("<div></div>").attr('class', 'comment_add').html("<input type='text' name='form_text' />").appendTo('#' + only_post['postId']);
+                //$("<div></div>").attr('class', 'comment_add').html("<input type='file' name='form_file' />").appendTo('#' + only_post['postId']);
             }
         });
     }
@@ -136,14 +137,33 @@
         {% endif %}
             var text = $('#form_text').val();
 
-            $.post("{{ path('post_add') }}",
-                    {form_text: text, group_id: groupId}
-            ).done(function(data) {
-                var response = jQuery.parseJSON(data);
-                if (response.status === "true") {
-                    updatePosts();
+            var data = new FormData();
+            $.each($('#post_add').find("input[type='file']"), function(i, tag) {
+                $.each($(tag)[0].files, function(i, file) {
+                    data.append(tag.name, file);
+                });
+            });
+            data.append("form_text", text);
+            data.append("group_id", groupId);
+
+            $.ajax({
+                url: "{{ path('post_add') }}",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function(data) {
+                    var response = jQuery.parseJSON(data);
+                    if (response.status === "true") {
+                        $('#form_text').val("");
+                        $('#form_file').val("");
+                        
+                        updatePosts();
+                    }
                 }
             });
+
             return false;
         });
     });
@@ -222,7 +242,7 @@
 
         <div class="span9">
             <div id="post_add">
-        {{ form_start(form_post_add) }}
+        {{ form_start(form_post_add, {'attr': {'enctype': 'multipart/form-data', 'method': 'post'}}) }}
             {{ form_errors(form_post_add) }}
 
                     <div class="form-group">
@@ -231,6 +251,9 @@
                 {{ form_widget(form_post_add.text, {'attr': {'class': 'input-block-level'}}) }}
                         </div>
 
+                        <div>
+                            <input type="file" id="form_file" name="form_file" />
+                        </div>
 
                         <div>
                 {{ form_widget(form_post_add.add, {'attr': {'class': 'btn btn-large btn-primary btn-block'}}) }}

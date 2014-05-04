@@ -9,6 +9,9 @@ use PA036\SocialNetworkBundle\Entity\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use PA036\AccountBundle\Entity\User;
+use PA036\SocialNetworkBundle\Entity\Attachment;
+use PA036\SocialNetworkBundle\Entity\AttachmentType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class PostController extends Controller {
 
@@ -27,11 +30,11 @@ class PostController extends Controller {
         $post->setText($request->request->get("form_text"));
         $post->setLikesCount(0);
         $post->setSeensCount(0);
-        $post->setUserId($user->getUserId());
+        $post->setUser($user);
         $post->setTimestamp(new \DateTime());
 
         $parent_id = $request->request->get("parent_id");
-                
+
         if (!empty($parent_id)) {
             $post_parent = $em->getRepository('PA036SocialNetworkBundle:Post')->findOneBy(array("postId" => $parent_id));
             $post->setParent($post_parent);
@@ -44,23 +47,31 @@ class PostController extends Controller {
             $post->setGroup($group);
         }
 
-//        $form = $this->createFormBuilder($post)
-//                ->add('text', 'text')
-//                ->add('add', 'submit')
-//                ->getForm();
-
-//        $form->handleRequest($request);
-
         if ($request->isMethod('POST')) {
-//            if ($form->isValid()) {
-//                $post = $form->getData();
-                $em->merge($post);
+
+            foreach ($request->files as $file) {
+                $attachmentType = new AttachmentType();
+                $attachmentType->setName($file->guessExtension());
+                $em->persist($attachmentType);
                 $em->flush();
 
-                $response['status'] = "true";
+                $attachment = new Attachment();
+                $attachment->setFileHandler($request->files);
 
-                return new Response(json_encode_ex($response));
-//            }
+                $attachment->setType($attachmentType);
+                $attachment->setFileHandler($file);
+
+                $attachment->setPost($post);
+                $em->persist($attachment);
+                $em->flush();
+            }
+
+            $em->persist($post);
+            $em->flush();
+
+            $response['status'] = "true";
+
+            return new Response(json_encode_ex($response));
         }
         return new Response();
     }

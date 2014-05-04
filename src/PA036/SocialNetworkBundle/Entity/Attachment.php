@@ -3,13 +3,15 @@
 namespace PA036\SocialNetworkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use PA036\SocialNetworkBundle\Entity\Post;
 
 /**
  * @ORM\Table(name="attachments", indexes={@ORM\Index(name="IDX_47C4FAD6C54C8C93", columns={"type_id"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
-class Attachment
-{
+class Attachment {
+
     /**
      * @var integer
      *
@@ -29,18 +31,18 @@ class Attachment
     /**
      * @var Post
      *
-     * @ORM\ManyToOne(targetEntity="Post", inversedBy="attachments")
+     * @ORM\ManyToOne(targetEntity="Post", inversedBy="attachments", cascade={"persist"})
      * @ORM\JoinColumn(name="post_id", referencedColumnName="post_id")
      */
     private $post;
 
-	/**
-	 * @var Message
-	 *
-	 * @ORM\ManyToOne(targetEntity="Message", inversedBy="attachments")
-	 * @ORM\JoinColumn(name="message_id", referencedColumnName="message_id")
-	 */
-	private $message;
+    /**
+     * @var Message
+     *
+     * @ORM\ManyToOne(targetEntity="Message", inversedBy="attachments")
+     * @ORM\JoinColumn(name="message_id", referencedColumnName="message_id")
+     */
+    private $message;
 
     /**
      * @var AttachmentType
@@ -50,60 +52,75 @@ class Attachment
      */
     private $type;
 
+    /**
+     * Virtual field used for handling the file
+     */
+    private $fileHandler;
 
-	public final function getAttachmentId()
-	{
-		return $this->attachmentId;
-	}
+    public final function getAttachmentId() {
+        return $this->attachmentId;
+    }
 
+    public function setBinaryData($binaryData) {
+        $this->binaryData = $binaryData;
+    }
 
-	public function setBinaryData($binaryData)
-	{
-		$this->binaryData = $binaryData;
-	}
+    public function getBinaryData() {
+        return $this->binaryData;
+    }
 
+    public function setMessage(Message $message = NULL) {
+        $this->message = $message;
+    }
 
-	public function getBinaryData()
-	{
-		return $this->binaryData;
-	}
+    /** @return Message */
+    public function getMessage() {
+        return $this->message;
+    }
 
+    public function setPost(Post $post = NULL) {
+        $this->post = $post;
+    }
 
-	public function setMessage(Message $message = NULL)
-	{
-		$this->message = $message;
-	}
+    /** @return Post */
+    public function getPost() {
+        return $this->post;
+    }
 
+    public function setType(AttachmentType $type) {
+        $this->type = $type;
+    }
 
-	/** @return Message */
-	public function getMessage()
-	{
-		return $this->message;
-	}
+    /** @return AttachmentType */
+    public function getType() {
+        return $this->type;
+    }
 
+    public function getFileHandler() {
+        return $this->fileHandler;
+    }
 
-	public function setPost(Post $post = NULL)
-	{
-		$this->post = $post;
-	}
+    public function setFileHandler($fileHandler) {
+        $this->fileHandler = $fileHandler;
+    }
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function saveFileContent() {
+        $tmpName = md5(uniqid(mt_rand(), true)) . '.' . $this->fileHandler->guessExtension();
+               
+        try {
+            $this->fileHandler->move(
+                    '../web/tmp/', $tmpName
+            );
+        } catch (\Exception $e) {
+            print_r($e);
+        }
 
+        $this->setBinaryData(file_get_contents('../web/tmp/' . $tmpName));
+        unlink('../web/tmp/' . $tmpName);
+    }
 
-	/** @return Post */
-	public function getPost()
-	{
-		return $this->post;
-	}
-
-
-	public function setType(AttachmentType $type)
-	{
-		$this->type = $type;
-	}
-
-
-	/** @return AttachmentType */
-	public function getType()
-	{
-		return $this->type;
-	}
 }
