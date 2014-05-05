@@ -6,11 +6,9 @@
  */
 namespace PA036\SocialNetworkBundle\Service;
 
-use \PA036\SocialNetworkBundle\Model\Domain\BaseService;
 use PA036\AccountBundle\Entity\User;
 use PA036\SocialNetworkBundle\Entity\Group;
 use Doctrine\ORM\Query\ResultSetMapping;
-use \PA036\SocialNetworkBundle\Model\Domain\IGroupService;
 
 class GroupService extends BaseService implements IGroupService
 {

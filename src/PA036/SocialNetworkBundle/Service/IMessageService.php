@@ -1,6 +1,6 @@
 <?php
 
-namespace PA036\SocialNetworkBundle\Model\Domain;
+namespace PA036\SocialNetworkBundle\Service;
 
 use PA036\AccountBundle\Entity\User;
 use PA036\SocialNetworkBundle\Entity\Conversation;

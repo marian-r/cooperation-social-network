@@ -2,12 +2,10 @@
 
 namespace PA036\SocialNetworkBundle\Service;
 
-use PA036\SocialNetworkBundle\Model\Domain\BaseService;
 use PA036\SocialNetworkBundle\Entity\Conversation;
 use PA036\SocialNetworkBundle\Entity\Message;
 use PA036\AccountBundle\Entity\User;
 use Doctrine\ORM\Query\ResultSetMapping;
-use PA036\SocialNetworkBundle\Model\Domain\IMessageService;
 
 /**
  * User: V
