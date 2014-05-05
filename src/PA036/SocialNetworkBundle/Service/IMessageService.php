@@ -16,9 +16,10 @@ interface IMessageService
 	 * @param User $user
 	 * @param User[] $members
 	 * @param string $messageBody
+	 * @param string $conversationName
 	 * @return Conversation
 	 */
-	function startConversation(User $user, $members, $messageBody);
+	function startConversation(User $user, $members, $messageBody, $conversationName);
 
 
 	/**
