@@ -45,15 +45,13 @@ class AccountController extends Controller {
             $password = $encoder->encodePassword($user->getPassword(), $user->getSalt());
             $user->setPassword($password);
             
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->get('pa036_account.service.user')->saveUser($user);
 
             return $this->redirect($this->generateUrl('login'));
         }
 
-        return $this->render(
-                        'PA036AccountBundle:Account:register.html.twig', array('form' => $form->createView())
+        return $this->render('PA036AccountBundle:Account:register.html.twig',
+		        array('form' => $form->createView())
         );
     }
 
@@ -62,13 +60,15 @@ class AccountController extends Controller {
      * @Template()
      */
     public function editAction(Request $request) {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
+	    $userService = $this->get('pa036_account.service.user');
+
+	    $username = $this->get('security.context')->getToken()->getUser()->getUsername();
         $info = array();
 
-        $em = $this->getDoctrine()->getManager();
-
-        $user = new User();
-        $user = $em->getRepository('PA036AccountBundle:User')->loadUserByUsername($username);
+        $user = $this->getDoctrine()
+		        ->getManager()
+		        ->getRepository('PA036AccountBundle:User')
+		        ->loadUserByUsername($username);
 
         $form_account = $this->createFormBuilder($user)
                 ->add('firstName', 'text')
@@ -79,12 +79,10 @@ class AccountController extends Controller {
         $form_account->handleRequest($request);
 
         if ($request->isMethod('POST') && $form_account->isValid()) {
-
             $user_edit = $form_account->getData();
+	        $userService->saveUser($user_edit);
 
-            $em->merge($user_edit);
-            $em->flush();
-            $info['account_change_success'] = 'Account Informations Successfully Changed.';
+	        $info['account_change_success'] = 'Account Informations Successfully Changed.';
         }
 
         $changePasswordModel = new ChangePassword();
@@ -96,13 +94,11 @@ class AccountController extends Controller {
 
             $changePassword = $form_pass->getData();
 
-            $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($user);
+            $encoder = $this->get('security.encoder_factory')->getEncoder($user);
             $password = $encoder->encodePassword($changePassword->getNewPassword(), $user->getSalt());
             $user->setPassword($password);
 
-            $em->merge($user);
-            $em->flush();
+	        $userService->saveUser($user);
 
             $info['account_change_pass_success'] = 'Password Successfully Changed.';
         }

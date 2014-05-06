@@ -1,0 +1,8 @@
+services:
+    security.authentication.login_success_handler:
+        class: PA036\AccountBundle\EventListener\LoginSuccessHandler
+        arguments: [ @router, @security.context, @doctrine.orm.entity_manager ]
+
+    pa036_account.service.user:
+        class: PA036\AccountBundle\Service\UserService
+        arguments: [ @doctrine.orm.entity_manager ]
