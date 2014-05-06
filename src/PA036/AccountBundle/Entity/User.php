@@ -186,6 +186,26 @@ class User implements UserInterface, \Serializable {
         $this->groupMaps = $groupMaps;
     }
 
+	public function getGroups()
+	{
+		$groups = new ArrayCollection();
+		foreach ($this->groupMaps as $groupMap) {
+			$groups->add($groupMap->getGroup());
+		}
+		return $groups;
+	}
+
+	public function getAdminGroups()
+	{
+		$groups = new ArrayCollection();
+		foreach ($this->groupMaps as $groupMap) {
+			if ($groupMap->getIsAdmin()) {
+				$groups->add($groupMap->getGroup());
+			}
+		}
+		return $groups;
+	}
+
     public function getIsActive() {
         return $this->isActive;
     }

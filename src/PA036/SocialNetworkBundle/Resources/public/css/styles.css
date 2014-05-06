@@ -58,3 +58,25 @@ body {
     padding-top: 14px;
     padding-bottom: 14px;
 }
+/* groups list */
+.group:hover {
+    background: #EEEEEE;
+    /*cursor: pointer;*/
+}
+.edit, .leave {
+    cursor: pointer;
+}
+
+.active {
+    color: red;
+}
+.comment {
+    margin-left: 10px;
+    font-size: 9pt;
+}
+.comment_add {
+    margin-left: 10px;
+}
+.comment_add input {
+
+}

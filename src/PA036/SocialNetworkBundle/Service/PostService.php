@@ -7,9 +7,11 @@
 
 namespace PA036\SocialNetworkBundle\Service;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+use PA036\SocialNetworkBundle\Entity\Attachment;
+use PA036\SocialNetworkBundle\Entity\AttachmentType;
 use PA036\SocialNetworkBundle\Entity\Seen;
 use PA036\SocialNetworkBundle\Entity\Like;
-use Doctrine\ORM\Query\ResultSetMapping;
 use PA036\AccountBundle\Entity\User;
 use PA036\SocialNetworkBundle\Entity\Group;
 use PA036\SocialNetworkBundle\Entity\Post;
@@ -41,17 +43,33 @@ class PostService extends BaseService implements IPostService
      * @param array $files
      * @return Post
      */
-    function addPost(User $user, $text, Group $group = NULL, $files = array())
-    {
-        $query = $this->entityManager->createNativeQuery(
-            'select * from add_post( NULL, :group_id, :user_id, :text)',
-            $this->createPostMapping()
-        );
-        $query->setParameter(":group_id", $group ? $group->getGroupId() : null);
-        $query->setParameter(":user_id", $user->getUserId());
-        $query->setParameter(":text", $text);
+	function addPost(User $user, $text, Group $group = NULL, $files = array())
+	{
+		$rsm = $this->createPostMapping();
+		return $this->entityManager->transactional(function($em) use ($rsm, $user, $text, $group, $files) {
 
-        return $query->getSingleResult();
+			$query = $em->createNativeQuery(
+					'select * from add_post( NULL, :group_id, :user_id, :text)', $rsm
+			);
+			$query->setParameter(":group_id", $group ? $group->getGroupId() : NULL);
+			$query->setParameter(":user_id", $user->getUserId());
+			$query->setParameter(":text", $text);
+
+			$post = $query->getSingleResult();
+
+			foreach ($files as $file) {
+				$attachmentType = new AttachmentType();
+				$attachmentType->setName($file->guessExtension());
+				$em->persist($attachmentType);
+
+				$attachment = new Attachment();
+				$attachment->setType($attachmentType);
+				$attachment->setFileHandler($file);
+				$attachment->setPost($post);
+				$em->persist($attachment);
+			}
+			return $post;
+		});
     }
 
     /**

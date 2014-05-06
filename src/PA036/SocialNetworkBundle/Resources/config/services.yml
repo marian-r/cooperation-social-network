@@ -1,4 +1,10 @@
 services:
     pa036_social_network.service.group:
-      class: PA036\SocialNetworkBundle\Service\GroupService
-      arguments: [ @doctrine.orm.entity_manager ]
+        class: PA036\SocialNetworkBundle\Service\GroupService
+        arguments: [ @doctrine.orm.entity_manager ]
+    pa036_social_network.service.post:
+        class: PA036\SocialNetworkBundle\Service\PostService
+        arguments: [ @doctrine.orm.entity_manager ]
+    pa036_social_network.service.message:
+        class: PA036\SocialNetworkBundle\Service\MessageService
+        arguments: [ @doctrine.orm.entity_manager ]

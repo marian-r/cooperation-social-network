@@ -1,68 +1,12 @@
-{% extends "PA036SocialNetworkBundle::layout.html.twig" %}
+{% extends 'PA036SocialNetworkBundle:Group:groupBase.html.twig' %}
 
 {% block title "page title" %}
 
 {% block head %}
 
+{{ parent() }}
+
 <script type="text/javascript">
-    function updateGroupMenu() {
-        var groupId;
-            {% if groupId is defined %}
-        groupId = {{ groupId }}
-            {% endif %}
-
-        $('#group .loading').show();
-
-        $.get("{{ path('group_my_admin') }}")
-                .done(function(data) {
-
-            var response = jQuery.parseJSON(data);
-            var groupsMyAdmin = response.groups;
-
-            $.get("{{ path('group_my') }}")
-                    .done(function(data) {
-                $('ul#group li.group').remove();
-
-                var activeClass = '', leaveClass = '';
-                var path = "{{ app.request.uri }}";
-                path = path.replace(path.substring(path.lastIndexOf('/') + 1), '')
-
-                if (path.indexOf("group") === -1) {
-                    path += 'group/';
-                }
-
-                var response = jQuery.parseJSON(data);
-                var groupsMy = response.groups;
-
-                for (var key in groupsMyAdmin) {
-
-                    if (groupId === groupsMyAdmin[key].groupId) {
-                        activeClass = 'active';
-                        leaveClass = 'hide';
-                    } else {
-                        activeClass = '';
-                        leaveClass = '';
-                    }
-                    $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId=' + groupsMyAdmin[key].groupId + '"><i class="icon-edit"></i></span> <span class="pull-right leave ' + leaveClass + '" href="group/leave/' + groupsMyAdmin[key].groupId + '"><i class="icon-remove"></i></span></li>');
-                }
-
-                for (var key in groupsMy) {
-
-                    if (groupId === groupsMyAdmin[key].groupId) {
-                        activeClass = 'active';
-                        leaveClass = 'hide';
-                    } else {
-                        activeClass = '';
-                        leaveClass = '';
-                    }
-                    $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="group/leave/' + groupsMy[key].groupId + '"><i class="icon-remove"></i></span></li>');
-                }
-
-                $('#group .loading').hide();
-            });
-        });
-
-    }
 
     function updatePosts() {
         var groupId = '';
@@ -85,7 +29,7 @@
 
                 console.log(only_post)
 
-                $("<div></div>").attr('id', only_post['postId']).html("").appendTo('#posts');
+                $("<div></div>").attr('id', only_post['postId']).html("").prependTo('#posts');
                 $("<div></div>").html(only_post['text']).appendTo('#' + only_post['postId']);
 
 
@@ -108,9 +52,9 @@
         $(document.body).on('keyup', '#posts input', function(event) {
             if (event.keyCode === 13) {
                 var groupId = '';
-        {% if app.request.get('group_id') != '' %}
+                {% if app.request.get('group_id') != '' %}
                 groupId = {{ app.request.get('group_id') }};
-        {% endif %}
+                {% endif %}
 
                 var comment = $(this).val();
                 var parent_id = $(this).parent().parent().attr("id");
@@ -132,9 +76,9 @@
 
         $('#form_add').click(function() {
             var groupId = '';
-        {% if app.request.get('group_id') != '' %}
+            {% if app.request.get('group_id') != '' %}
             groupId = {{ app.request.get('group_id') }};
-        {% endif %}
+            {% endif %}
             var text = $('#form_text').val();
 
             var data = new FormData();
@@ -169,101 +113,39 @@
     });
 
     $(document).ready(function() {
-        updateGroupMenu();
         updatePosts();
     });
 
-    $(document).ready(function() {
-        $(".fancybox").fancybox({
-            // API options 
-            autoScale: true,
-            width: 500,
-            height: 500,
-            type: 'iframe',
-            padding: 0,
-            beforeClose: function() {
-                updateGroupMenu();
-            }
-        });
-    });
-
-    $(document).ready(function() {
-
-        $(".leave").on("click", function() {
-
-            var groupId = $(this).attr('id');
-
-            $.get("{{ path('group_leave') }}", {groupId: groupId})
-                    .done(function(data) {
-                var response = jQuery.parseJSON(data);
-                if (response.status === "true") {
-                    $("#" + groupId).parent().hide();
-                }
-            });
-        });
-    });
     </script>
-
-    <style type="text/css">
-            .group:hover {
-                background: #EEEEEE;
-                /*cursor: pointer;*/
-            }
-            .edit, .leave {
-                cursor: pointer;
-            }
-            .active {
-                color: red;
-            }
-            .comment {
-                margin-left: 10px;
-                font-size: 9pt;
-            }
-            .comment_add {
-                margin-left: 10px;
-            }
-            .comment_add input {
-
-            }
-        </style>
 
 {% endblock %}
 
 {% block content %}
-        <div class="span3">
-            <div class="well sidebar-nav">
-                <ul id="group" class="nav nav-list">
-                    <li class="nav-header">My groups</li>
-                    <li><a href="#" class="fancybox" data-fancybox-href="{{ path('group_add') }}">Add group</a></li>
-                    <li class="loading">Loading...</li>
-                </ul>
-            </div><!--/.well -->
-        </div><!--/span-->
+    <div class="span9">
+        <div id="post_add">
+            {{ form_start(form_post_add, {'attr': {'enctype': 'multipart/form-data', 'method': 'post'} }) }}
+                {{ form_errors(form_post_add) }}
 
-        <div class="span9">
-            <div id="post_add">
-        {{ form_start(form_post_add, {'attr': {'enctype': 'multipart/form-data', 'method': 'post'}}) }}
-            {{ form_errors(form_post_add) }}
+                <div class="form-group">
+                    {{ form_label(form_post_add.text) }}
+                    {{ form_errors(form_post_add.text) }}
+                    {{ form_widget(form_post_add.text, {'attr': {'class': 'input-block-level' }}) }}
+                </div>
 
-                    <div class="form-group">
-                {{ form_label(form_post_add.text) }}
-                {{ form_errors(form_post_add.text) }}
-                {{ form_widget(form_post_add.text, {'attr': {'class': 'input-block-level'}}) }}
-                        </div>
+                <div class="form-group">
+                    <input type="file" id="form_file" name="form_file"/>
+                </div>
 
-                        <div>
-                            <input type="file" id="form_file" name="form_file" />
-                        </div>
+                <div>
+                    {{ form_widget(form_post_add.add, {'attr': {'class': 'btn btn-large btn-primary btn-block' }}
+                    ) }}
+                </div>
 
-                        <div>
-                {{ form_widget(form_post_add.add, {'attr': {'class': 'btn btn-large btn-primary btn-block'}}) }}
-                            </div>
+            {{ form_end(form_post_add) }}
+        </div>
+        <div id="posts">
 
-        {{ form_end(form_post_add) }}
-                        </div>
-                        <div id="posts">
-
-                        </div>
-    {# include 'PA036SocialNetworkBundle:Post:posts.html.twig' #}
-                    </div>
+        </div>
+        {# include 'PA036SocialNetworkBundle:Post:posts.html.twig' #}
+    </div>
 {% endblock %}

@@ -13,14 +13,13 @@ use PA036\SocialNetworkBundle\Entity\Post;
 /**
  * @Route("/group")
  */
-class GroupController extends Controller {
+class GroupController extends BaseController {
 
     /**
      * @Route("/add", name="group_add")
      * @Template()
      */
     public function addAction(Request $request) {
-        $user = $this->get('security.context')->getToken()->getUser();
         $group = new Group();
         $form = $this->createFormBuilder($group)
                 ->add('name', 'text')
@@ -33,14 +32,14 @@ class GroupController extends Controller {
         if ($request->isMethod('POST')) {
             if ($form->isValid()) {
                 $group = $form->getData();
-                $service = $this->get('pa036_social_network.service.group');
+                $service = $this->getGroupService();
 
-                if ($service->addGroup($group, $user)) {
+                if ($service->addGroup($group, $this->getUser())) {
                     $response['status'] = "true";
                 } else {
                     $response['status'] = "false";
                 }
-                return new Response(json_encode($response));
+                return new Response(json_encode_ex($response));
             }
         }
 
@@ -52,16 +51,8 @@ class GroupController extends Controller {
      * @Template()
      */
     public function editAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-
-        $group = new Group();
-
         $groupId = $request->query->get("groupId");
-
-        if ($groupId != null) {
-            $em = $this->getDoctrine()->getManager();
-            $group = $em->getRepository('PA036SocialNetworkBundle:Group')->findOneBy(array("groupId" => $groupId));
-        }
+	    $group = ($groupId !== NULL) ? $this->findGroupById($groupId) : new Group();
 
         $form = $this->createFormBuilder($group)
                 ->add('groupId', 'hidden')
@@ -76,13 +67,11 @@ class GroupController extends Controller {
         if ($request->isMethod('POST')) {
             if ($form->isValid()) {
                 $group = $form->getData();
-                $em = $this->getDoctrine()->getManager();
-                $em->merge($group);
-                $em->flush();
+	            $this->getGroupService()->saveGroup($group);
 
                 $response['status'] = "true";
 
-                return new Response(json_encode($response));
+                return new Response(json_encode_ex($response));
             }
         }
 
@@ -94,18 +83,18 @@ class GroupController extends Controller {
      * @Template()
      */
     public function removeAction(Request $request) {
-
-        $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('PA036SocialNetworkBundle:Group')->findOneBy(array("groupId" => $request->request->get("id")));
+	    $groupId = $request->request->get("id");
+	    $group = $this->findGroupById($groupId);
 
         if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
+	        // TODO: remove
+	        $em = $this->getDoctrine()->getManager();
             $em->remove($group);
             $em->flush();
 
             $response['status'] = "true";
 
-            return new Response(json_encode($response));
+            return new Response(json_encode_ex($response));
         }
     }
 
@@ -113,48 +102,25 @@ class GroupController extends Controller {
      * @Route("/my", name="group_my")
      */
     public function myAction() {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
-
-        $em = $this->getDoctrine()->getManager();
-        $groups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyGroup($username);
-
-        $response['groups'] = $groups;
-
-        return new Response(json_encode($response));
+	    $response['groups'] = $this->getUser()->getGroups();
+        return new Response(json_encode_ex($response));
     }
 
     /**
      * @Route("/my/admin", name="group_my_admin")
      */
     public function myAdminAction() {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
-
-        $em = $this->getDoctrine()->getManager();
-        $groups = $em->getRepository('PA036SocialNetworkBundle:Group')->getMyAdminGroup($username);
-
-        $response['groups'] = $groups;
-
-        return new Response(json_encode($response));
+	    $response['groups'] = $this->getUser()->getAdminGroups();
+        return new Response(json_encode_ex($response));
     }
 
     /**
      * @Route("/leave", name="group_leave")
      */
     public function leaveAction(Request $request) {
-        $username = $this->get('security.context')->getToken()->getUser()->getUsername();
-
-        $response = array();
-
-        $em = $this->getDoctrine()->getManager();
-        $leave = $em->getRepository('PA036SocialNetworkBundle:Group')->leaveGroup($username, $request->query->get("groupId"));
-
-        if ($leave) {
-            $response['status'] = "true";
-        } else {
-            $response['status'] = "false";
-        }
-
-        return new Response(json_encode($response));
+	    $this->getGroupService()->leaveGroup($this->getUser());
+        $response = array('status' => "true");
+        return new Response(json_encode_ex($response));
     }
 
     /**
@@ -162,14 +128,11 @@ class GroupController extends Controller {
      * @Template("PA036SocialNetworkBundle:Group:group.html.twig")
      */
     public function groupAction($group_id) {
-        $post = new Post();
-
-        $form = $this->createFormBuilder($post)
+        $form = $this->createFormBuilder(new Post())
                 ->add('text', 'text')
                 ->add('add', 'submit')
                 ->getForm();
 
         return array('form_post_add' => $form->createView());
     }
-
 }
