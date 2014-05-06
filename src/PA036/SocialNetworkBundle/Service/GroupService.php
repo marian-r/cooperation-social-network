@@ -51,7 +51,8 @@ class GroupService extends BaseService implements IGroupService
      */
     function saveGroup(Group $group)
     {
-        $this->entityManager->persist($group);
+        $this->entityManager->merge($group);
+        $this->entityManager->flush($group);
     }
 
     /**

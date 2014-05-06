@@ -116,6 +116,7 @@ class PostService extends BaseService implements IPostService
         $like->setTimestamp(new \DateTime(date('Y-m-d H:i:s')));
 
         $this->entityManager->persist($like);
+        $this->entityManager->flush();
     }
 
     /**
@@ -131,6 +132,7 @@ class PostService extends BaseService implements IPostService
         $seen->setTimestamp(new \DateTime(date('Y-m-d H:i:s')));
 
         $this->entityManager->persist($seen);
+	    $this->entityManager->flush();
     }
 
     /**
