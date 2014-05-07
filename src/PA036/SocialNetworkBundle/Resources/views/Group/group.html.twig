@@ -31,6 +31,7 @@
 
                 $("<div></div>").attr('id', only_post['postId']).html("").prependTo('#posts');
                 $("<div></div>").html(only_post['text']).appendTo('#' + only_post['postId']);
+                $("<div class='like'></div>").html("<a href='#'>Like </a><span class='count'>" + only_post['likesCount'] + "</span>").appendTo('#' + only_post['postId']);
 
 
                 if (only_comments !== undefined) {
@@ -49,6 +50,21 @@
     }
 
     $(document).ready(function() {
+
+        $(document.body).on('click', '.like a', function(event) {
+
+            var post_id = $(this).parent().parent().attr('id');
+
+            $.post("{{ path('posts_like') }}",
+                    {post_id: post_id}
+            ).done(function(data) {
+
+                var response = jQuery.parseJSON(data);
+                $('#' + post_id + " .like .count").html(response.post.like_count);
+
+            });
+        });
+
         $(document.body).on('keyup', '#posts input', function(event) {
             if (event.keyCode === 13) {
                 var groupId = '';

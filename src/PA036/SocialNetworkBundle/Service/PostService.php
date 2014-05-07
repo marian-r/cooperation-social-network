@@ -148,4 +148,34 @@ class PostService extends BaseService implements IPostService
                 )
             );
     }
+    
+    /**
+     * @param post id $post_id
+     * @return Post
+     */
+    function findPostById($post_id)
+    {
+        return
+            $this->entityManager->getRepository('PA036\SocialNetworkBundle\Entity\Post')->findOneBy(
+                array(
+                    'postId' => $post_id
+                )
+            );
+    }
+    
+    /**
+     * @param Post $post
+     * @param User $user
+     * @return Like
+     */
+    function findLikeByPost(Post $post, User $user)
+    {
+        return
+            $this->entityManager->getRepository('PA036\SocialNetworkBundle\Entity\Like')->findOneBy(
+                array(
+                    'post' => $post,
+                    'user' => $user
+                )
+            );
+    }
 }
