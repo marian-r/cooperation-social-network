@@ -117,6 +117,7 @@ class PostService extends BaseService implements IPostService
 
         $this->entityManager->persist($like);
         $this->entityManager->flush();
+	    $this->entityManager->refresh($post);
     }
 
     /**
@@ -133,6 +134,7 @@ class PostService extends BaseService implements IPostService
 
         $this->entityManager->persist($seen);
 	    $this->entityManager->flush();
+	    $this->entityManager->refresh($post);
     }
 
     /**
