@@ -47,7 +47,7 @@ class MessageService extends BaseService implements IMessageService
      * @param string $conversationName
      * @return Conversation
      */
-    function startConversation(User $user, $members, $messageBody, $conversationName = NULL)
+    function startConversation(User $user, $members, $messageBody, $conversationName)
     {
         $member_ids = array();
 
