@@ -52,6 +52,16 @@
 
             var posts = response.posts;
 
+            var count = Object.keys(posts).length;
+            var i = 1;
+            var order = [];
+            for (var key in posts) {
+                order[count-i] = posts[key];
+                i++;
+            }
+
+            posts = order;
+
             $('#posts').html('');
             for (var key in posts) {
                 var post = posts[key];
@@ -62,6 +72,15 @@
                 var $comments = $('<ul class="comments list-group"></ul>').appendTo($postPanel);
 
                 if (only_comments !== undefined) {
+                    
+                    // ORDER comments
+                    /*only_comments.sort(function(a, b){
+
+                        var post1 = a.postId, post2 = b.postId;
+                        if(post1 === post2) return 0;
+                        return post1 < post2 ? 1: -1;
+                    });*/
+                
                     for (var key in only_comments) {
                         var $comment = getCommentElement(only_comments[key]);
                         $comments.append($comment);
