@@ -146,7 +146,8 @@ class PostService extends BaseService implements IPostService
         return
             $this->entityManager->getRepository('PA036\SocialNetworkBundle\Entity\Post')->findBy(
                 array(
-                    'group' => $group ? $group->getGroupId() : null
+                    'group' => $group ? $group->getGroupId() : NULL,
+	                'parent' => NULL
                 ), array('timestamp' => 'ASC')
             );
     }
