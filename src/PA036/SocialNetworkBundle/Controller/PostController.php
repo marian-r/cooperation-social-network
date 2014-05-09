@@ -56,26 +56,27 @@ class PostController extends BaseController
 
 		return new Response(json_encode_ex($response));
 	}
-        
-         /**
+
+
+	/**
 	 * @Route("/posts/like", name="posts_like")
 	 */
-        public function likePostAction(Request $request) 
-        {
-            $post_id = $request->request->get("post_id");
-                        
-            $post = (!empty($post_id)) ? $this->findPostById($post_id) : NULL;
-            
-            $like = $this->getPostService()->findLikeByPost($post, $this->getUser());
-            
-            if(!$like) {
-                $this->getPostService()->likePost($post, $this->getUser());
-            }
-            
-            $post = (!empty($post_id)) ? $this->findPostById($post_id) : NULL;
-            
-            $response['post']['like_count'] = $post->getLikesCount();
-                       
-            return new Response(json_encode_ex($response));
-        }
+	public function likePostAction(Request $request)
+	{
+		$post_id = $request->request->get("post_id");
+
+		$post = (!empty($post_id)) ? $this->findPostById($post_id) : NULL;
+
+		$like = $this->getPostService()->findLikeByPost($post, $this->getUser());
+
+		if (!$like) {
+			$this->getPostService()->likePost($post, $this->getUser());
+		}
+
+		$post = (!empty($post_id)) ? $this->findPostById($post_id) : NULL;
+
+		$response['post']['like_count'] = $post->getLikesCount();
+
+		return new Response(json_encode_ex($response));
+	}
 }

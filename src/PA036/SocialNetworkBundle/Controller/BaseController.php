@@ -4,6 +4,8 @@ namespace PA036\SocialNetworkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use PA036\AccountBundle\Entity\User;
+use PA036\SocialNetworkBundle\Entity\Group;
+use PA036\SocialNetworkBundle\Entity\Post;
 use PA036\SocialNetworkBundle\Service\IGroupService;
 use PA036\SocialNetworkBundle\Service\IPostService;
 use PA036\SocialNetworkBundle\Service\IMessageService;
@@ -73,12 +75,14 @@ abstract class BaseController extends Controller
 	}
 
 
+	/** @return Group */
 	protected function findGroupById($groupId)
 	{
 		return $this->findEntity('Group', array("groupId" => $groupId));
 	}
 
 
+	/** @return Post */
 	protected function findPostById($postId)
 	{
 		return $this->findEntity('Post', array("postId" => $postId));
