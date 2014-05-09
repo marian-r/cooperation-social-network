@@ -28,7 +28,6 @@ $(document).ready(function() {
         $.post( "{{ path('group_edit') }}?groupId={{id}}",
             $("#group_edit form").serialize()
         ).done(function( data ) {
-                    console.log(data);
             var response = jQuery.parseJSON(data);
             if(response.status === "true"){
                 parent.jQuery.fancybox.close();
@@ -41,8 +40,8 @@ $(document).ready(function() {
     $("#form_users").tokenInput("{{ path('user_list') }}", {prePopulate : {{members|raw}}});
 
     $("#form_remove").click(function() {
-        $.post( "{{ path('group_remove') }}", 
-           { id: $("#group_edit #form_groupId").val() }
+        $.post( "{{ path('group_remove') }}",
+           { id: {{id}} }
         ).done(function( data ) {
             var response = jQuery.parseJSON(data);
             if(response.status === "true"){
@@ -81,7 +80,7 @@ $(document).ready(function() {
                     {{ form_errors(form.users) }}
                     {{ form_widget(form.users, {'attr': {'class': 'input-block-level'}}) }}
                 </div>
-        
+
                 <div>
                 {{ form_widget(form.edit, {'attr': {'class': 'btn btn-large btn-primary btn-block'}}) }}
                 </div>

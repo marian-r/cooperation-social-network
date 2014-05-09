@@ -135,13 +135,11 @@ class GroupController extends BaseController {
 	    $group = $this->findGroupById($groupId);
 
         if ($request->isMethod('POST')) {
-	        // TODO: remove
 	        $em = $this->getDoctrine()->getManager();
             $em->remove($group);
             $em->flush();
 
             $response['status'] = "true";
-
             return new Response(json_encode_ex($response));
         }
     }

@@ -55,7 +55,7 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span>');
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span>');
                                     }
 
                                     $('#group .loading').hide();
