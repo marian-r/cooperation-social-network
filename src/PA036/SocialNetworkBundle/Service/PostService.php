@@ -147,7 +147,7 @@ class PostService extends BaseService implements IPostService
             $this->entityManager->getRepository('PA036\SocialNetworkBundle\Entity\Post')->findBy(
                 array(
                     'group' => $group ? $group->getGroupId() : null
-                )
+                ), array('timestamp' => 'ASC')
             );
     }
     
@@ -177,7 +177,7 @@ class PostService extends BaseService implements IPostService
                 array(
                     'post' => $post,
                     'user' => $user
-                )
+                ), array('timestamp' => 'ASC')
             );
     }
 }
