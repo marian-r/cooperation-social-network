@@ -82,11 +82,11 @@
 
             $(".fancybox").fancybox({
                 // API options
-                autoScale: true,
-                width: 500,
-                height: 500,
+                width: '450px',
+                height: '230px',
+                autoDimensions: false,
                 type: 'iframe',
-                padding: 0,
+                autoSize: false,
                 beforeClose: function () {
                     updateGroupMenu();
                 }
