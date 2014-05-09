@@ -154,8 +154,8 @@ class GroupController extends BaseController {
             ->getManager()
             ->getRepository("PA036AccountBundle:User")
             ->createQueryBuilder('u')
-            ->where('u.firstName LIKE :q')
-            ->orWhere('u.lastName LIKE :q')
+            ->where('LOWER(u.firstName) LIKE LOWER(:q)')
+            ->orWhere('LOWER(u.lastName) LIKE LOWER(:q)')
             ->setParameter('q', $value.'%')
             ->getQuery()
             ->getResult();
