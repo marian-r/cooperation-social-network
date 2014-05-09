@@ -41,7 +41,7 @@
                                             leaveClass = '';
                                         }
                                         loaded_groups.push(groupsMyAdmin[key].groupId);
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span> <span class="pull-right fancybox edit" data-fancybox-href="{{ path('group_edit')}}?groupId=' + groupsMyAdmin[key].groupId + '"><i class="icon-edit"></i></span></li>');
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span> <span class="pull-right fancybox edit" data-fancybox-href="{{ path('group_edit')}}?groupId=' + groupsMyAdmin[key].groupId + '"><i class="glyphicon glyphicon-edit"></i></span></li>');
                                     }
 
                                     for (var key in groupsMy) {
@@ -55,7 +55,7 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span>');
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span>');
                                     }
 
                                     $('#group .loading').hide();
