@@ -49,11 +49,11 @@ class PostService extends BaseService implements IPostService
 		return $this->entityManager->transactional(function($em) use ($rsm, $user, $text, $group, $files) {
 
 			$query = $em->createNativeQuery(
-					'select * from add_post( NULL, :group_id, :user_id, :text)', $rsm
+					'select * from add_post( NULL, :group_id, :user_id, :post_text)', $rsm
 			);
 			$query->setParameter(":group_id", $group ? $group->getGroupId() : NULL);
 			$query->setParameter(":user_id", $user->getUserId());
-			$query->setParameter(":text", $text);
+			$query->setParameter(":post_text", $text);
 
 			$post = $query->getSingleResult();
 
