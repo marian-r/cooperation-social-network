@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
     function getPostElement(post) {
-        var $leftHeading = $('<div class="col-md-6">' + post['author'] + '</div>');
+        var $leftHeading = $('<div class="col-md-6"></div>').text(post['author']);
 
         var $rightHeading = $('<div class="col-md-6 text-right"></div>');
         $rightHeading.append('<span class="glyphicon glyphicon-time text-right"></span>');
@@ -18,7 +18,7 @@
         var $postHeading = $('<div class="panel-heading"><div class="container"></div></div>');
         $postHeading.append($('<div class="row"></div>').append($leftHeading).append($rightHeading));
 
-        var $postBody = $('<div class="panel-body">' + post['text'] + '</div>');
+        var $postBody = $('<div class="panel-body"></div>').text(post['text']);
         $postBody.append($('<div class="like"></div>')
                 .append('<a href="#">Like</a>')
                 .append(' <span class="count badge">' + post['likesCount'] + '</span>')
@@ -27,15 +27,20 @@
         var $postPanel = $('<div class="post panel panel-default"></div>').attr('id', post['postId']);
         $postPanel.append($postHeading);
         $postPanel.append($postBody);
+
         return $postPanel;
     }
 
     function getCommentElement(comment) {
         var $comment = $('<li class="comment list-group-item"></li>');
-        $comment.append('<span class="author">' + comment['author'] + '</span>');
+
+        $comment.append($('<span class="author"></span>').text(comment['author']));
         $comment.append(' <span class="glyphicon glyphicon-time"></span>');
         $comment.append(' <span class="timestamp">' + comment['timestamp'] + '</span><br />');
-        $comment.append(' <span class="text">' + comment['text'] + '</span>');
+
+        var $commentText = $('<span class="text"></span>').text(comment['text']);
+        $comment.append($commentText);
+
         return $comment;
     }
 
