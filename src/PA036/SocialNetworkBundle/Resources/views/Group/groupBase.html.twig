@@ -41,7 +41,7 @@
                                             leaveClass = '';
                                         }
                                         loaded_groups.push(groupsMyAdmin[key].groupId);
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="group/leave/' + groupsMyAdmin[key].groupId + '"><i class="icon-remove"></i></span> <span class="pull-right fancybox edit" data-fancybox-href="{{ path('group_edit')}}?groupId=' + groupsMyAdmin[key].groupId + '"><i class="icon-edit"></i></span></li>');
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span> <span class="pull-right fancybox edit" data-fancybox-href="{{ path('group_edit')}}?groupId=' + groupsMyAdmin[key].groupId + '"><i class="icon-edit"></i></span></li>');
                                     }
 
                                     for (var key in groupsMy) {
@@ -55,10 +55,23 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="group/leave/' + groupsMy[key].groupId + '"><i class="icon-remove"></i></span></li>');
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="icon-remove"></i></span>');
                                     }
 
                                     $('#group .loading').hide();
+
+                                    $(".leave").on("click", function () {
+                                        var elem = $(this);
+                                        var groupId = elem.attr('data-id');
+
+                                        $.get("{{ path('group_leave') }}", {groupId: groupId})
+                                                .done(function (data) {
+                                                    var response = jQuery.parseJSON(data);
+                                                    if (response.status === "true") {
+                                                        elem.parent().hide();
+                                                    }
+                                                });
+                                    });
                                 });
                     });
 
@@ -79,18 +92,7 @@
                 }
             });
 
-            $(".leave").on("click", function () {
 
-                var groupId = $(this).attr('id');
-
-                $.get("{{ path('group_leave') }}", {groupId: groupId})
-                        .done(function (data) {
-                            var response = jQuery.parseJSON(data);
-                            if (response.status === "true") {
-                                $("#" + groupId).parent().hide();
-                            }
-                        });
-            });
         });
 
     </script>
