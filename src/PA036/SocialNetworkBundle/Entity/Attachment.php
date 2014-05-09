@@ -21,6 +21,13 @@ class Attachment {
      */
     private $attachmentId;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=100, nullable=false)
+	 */
+	private $name;
+
     /**
      * @var string
      *
@@ -60,6 +67,14 @@ class Attachment {
     public final function getAttachmentId() {
         return $this->attachmentId;
     }
+
+	public function setName($name) {
+		$this->name = $name;
+	}
+
+	public function getName() {
+		return $this->name;
+	}
 
     public function setBinaryData($binaryData) {
         $this->binaryData = $binaryData;
@@ -110,17 +125,14 @@ class Attachment {
      */
     public function saveFileContent() {
         $tmpName = md5(uniqid(mt_rand(), true)) . '.' . $this->fileHandler->guessExtension();
-               
+	    $tmpPath = '../web/tmp/' . $tmpName;
         try {
-            $this->fileHandler->move(
-                    '../web/tmp/', $tmpName
-            );
+	        $this->name = $this->fileHandler->getClientOriginalName();
+	        $this->fileHandler->move('../web/tmp/', $tmpName);
         } catch (\Exception $e) {
             print_r($e);
         }
-
-        $this->setBinaryData(file_get_contents('../web/tmp/' . $tmpName));
-        unlink('../web/tmp/' . $tmpName);
+        $this->setBinaryData(file_get_contents($tmpPath));
+        unlink($tmpPath);
     }
-
 }

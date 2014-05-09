@@ -60,7 +60,8 @@ CREATE TABLE "attachments" (
   "post_id"       int4,
   "message_id"    int4,
   "type_id"       int4 NOT NULL, 
-  "binary_data"   bytea NOT NULL, 
+  "name"          varchar(100) NOT NULL,
+  "binary_data"   bytea NOT NULL,
   PRIMARY KEY ("attachment_id"),
   CHECK (("post_id" IS NOT NULL AND "message_id" IS NULL) OR  ("post_id" IS NULL AND "message_id" IS NOT NULL))
 );
