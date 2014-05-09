@@ -8,6 +8,12 @@
 
 <script type="text/javascript">
 
+    function getLikeElement(post) {
+        return $('<div class="like"></div>')
+                .append($('<a href="#">Like</a>').data('post-id', post['postId']))
+                .append(' <span class="count badge">' + post['likesCount'] + '</span>');
+    }
+
     function getPostElement(post) {
         var $leftHeading = $('<div class="col-md-6"></div>').text(post['author']);
 
@@ -19,12 +25,11 @@
         $postHeading.append($('<div class="row"></div>').append($leftHeading).append($rightHeading));
 
         var $postBody = $('<div class="panel-body"></div>').text(post['text']);
-        $postBody.append($('<div class="like"></div>')
-                .append('<a href="#">Like</a>')
-                .append(' <span class="count badge">' + post['likesCount'] + '</span>')
-        );
+        $postBody.append(getLikeElement(post));
 
-        var $postPanel = $('<div class="post panel panel-default"></div>').attr('id', post['postId']);
+        var $postPanel = $('<div class="post panel panel-default"></div>')
+                .attr('id', 'post-' + post['postId'])
+                .data('post-id', post['postId']);
         $postPanel.append($postHeading);
         $postPanel.append($postBody);
 
@@ -32,7 +37,9 @@
     }
 
     function getCommentElement(comment) {
-        var $comment = $('<li class="comment list-group-item"></li>');
+        var $comment = $('<li class="comment list-group-item"></li>')
+                .attr('id', 'post-' + comment['postId'])
+                .data('post-id', comment['postId']);
 
         $comment.append($('<span class="author"></span>').text(comment['author']));
         $comment.append(' <span class="glyphicon glyphicon-time"></span>');
@@ -40,6 +47,7 @@
 
         var $commentText = $('<span class="text"></span>').text(comment['text']);
         $comment.append($commentText);
+        $comment.append(getLikeElement(comment).addClass('pull-right'));
 
         return $comment;
     }
@@ -108,12 +116,14 @@
         $(document.body).on('click', '.like a', function(event) {
             event.preventDefault();
 
-            var post_id = $(this).parents('.post').attr('id');
+            var post_id = $(this).data('post-id');
+
+            $countItem = $(this).siblings('.count');
 
             $.post("{{ path('posts_like') }}", {post_id: post_id})
                     .done(function (data) {
                         var response = jQuery.parseJSON(data);
-                        $('#' + post_id).find('.like .count').html(response.post.like_count);
+                        $countItem.text(response.post.like_count);
                     });
         });
 
@@ -126,7 +136,7 @@
 
                 var $input = $(this);
                 var comment = $input.val();
-                var parent_id = $input.parent().parent().attr("id");
+                var parent_id = $input.parent().parent().data('post-id');
 
                 $.post("{{ path('post_add') }}",
                         {form_text: comment, parent_id: parent_id, group_id: groupId})
