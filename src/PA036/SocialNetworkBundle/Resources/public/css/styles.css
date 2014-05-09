@@ -70,13 +70,10 @@ body {
 .active {
     color: red;
 }
+
+/* posts */
 .comment {
-    margin-left: 10px;
     font-size: 9pt;
 }
-.comment_add {
-    margin-left: 10px;
-}
-.comment_add input {
-
+.comment-add {
 }

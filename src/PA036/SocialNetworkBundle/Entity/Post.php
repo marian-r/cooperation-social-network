@@ -212,6 +212,7 @@ class Post implements \JsonSerializable {
         return array(
             'postId' => $this->postId,
             'text' => $this->text,
+            'author' => $this->user->getFullName(),
             'likesCount' => $this->likesCount,
             'seensCount' => $this->seensCount
         );
