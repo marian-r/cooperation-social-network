@@ -27,38 +27,52 @@
                 var only_post = post['post'];
                 var only_comments = post['comments'];
 
-                var $post = $("<div></div>").attr('id', only_post['postId']).appendTo('#posts');
-                $post.append($("<div>" + only_post['text'] + "</div>"));
-                $post.append($('<div class="like"></div>')
+                var $postPanel = $('<div class="post panel panel-default"></div>').attr('id', only_post['postId']).appendTo('#posts');
+                $postPanel.append($('<div class="panel-heading">' + only_post['author'] + '</div>'));
+                var $postBody = $('<div class="panel-body">' + only_post['text'] + '</div>');
+                $postBody.append($('<div class="like"></div>')
                         .append('<a href="#">Like</a>')
-                        .append(' <span class="count">' + only_post['likesCount'] + '</span>')
+                        .append(' <span class="count badge">' + only_post['likesCount'] + '</span>')
                 );
-                var $comments = $('<div class="comments"></div>').appendTo($post);
+                $postPanel.append($postBody);
+
+                var $comments = $('<ul class="comments list-group"></ul>').appendTo($postPanel);
 
                 if (only_comments !== undefined) {
                     for (var key in only_comments) {
-                        $comments.append($('<div class="comment">' + only_comments[key]['text'] + '</div>'));
+                        var commentData = only_comments[key]
+                        var $comment = getCommentElement(commentData['author'], commentData['text']);
 
+                        $comments.append($comment);
                     }
                 }
 
-                $post.append($('<div class="comment_add"></div>')
-                        .append("<input type='text' name='form_text' />")
+                $postPanel.append($('<div class="comment-add"></div>')
+                        .append('<input type="text" name="form_text" class="form-control input-sm"' +
+                                'placeholder="Write a comment..." />')
                 );
             }
         });
     }
 
+    function getCommentElement(author, text) {
+        var $comment = $('<li class="comment list-group-item"></li>');
+        $comment.append('<span class="author">' + author + '</span>');
+        $comment.append(' <span class="text">' + text + '</span>');
+        return $comment;
+    }
+
     $(document).ready(function() {
 
         $(document.body).on('click', '.like a', function(event) {
+            event.preventDefault();
 
-            var post_id = $(this).parent().parent().attr('id');
+            var post_id = $(this).parents('.post').attr('id');
 
             $.post("{{ path('posts_like') }}", {post_id: post_id})
                     .done(function (data) {
                         var response = jQuery.parseJSON(data);
-                        $('#' + post_id + " .like .count").html(response.post.like_count);
+                        $('#' + post_id).find('.like .count').html(response.post.like_count);
                     });
         });
 
@@ -80,8 +94,9 @@
                             var response = jQuery.parseJSON(data);
 
                             if (response.status === "true") {
-                                var $comment = $('<div class="comment"></div>').html(comment);
-                                
+                                var author = '{{ app.user.fullName|escape('js')}}';
+                                var $comment = getCommentElement(author, comment);
+
                                 $input.parent().siblings('.comments').append($comment);
                                 $input.val("");
                             }
@@ -144,7 +159,7 @@
                 <div class="form-group">
                     {{ form_label(form_post_add.text) }}
                     {{ form_errors(form_post_add.text) }}
-                    {{ form_widget(form_post_add.text, {'attr': {'class': 'input-block-level' }}) }}
+                    {{ form_widget(form_post_add.text, {'attr': {'class': 'input-lg' }}) }}
                 </div>
 
                 <div class="form-group">
@@ -152,7 +167,7 @@
                 </div>
 
                 <div>
-                    {{ form_widget(form_post_add.add, {'attr': {'class': 'btn btn-large btn-primary btn-block' }}
+                    {{ form_widget(form_post_add.add, {'attr': {'class': 'btn btn-large btn-primary' }}
                     ) }}
                 </div>
 

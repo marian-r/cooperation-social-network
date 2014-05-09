@@ -213,4 +213,9 @@ class User implements UserInterface, \Serializable {
     public function setIsActive($isActive) {
         $this->isActive = $isActive;
     }
+
+	public function getFullName()
+	{
+		return "$this->firstName $this->lastName";
+	}
 }
