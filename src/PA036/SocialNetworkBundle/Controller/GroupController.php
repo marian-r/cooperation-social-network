@@ -118,6 +118,7 @@ class GroupController extends BaseController {
      * @Route("/leave", name="group_leave")
      */
     public function leaveAction(Request $request) {
+        //todo this takes group as first param!
 	    $this->getGroupService()->leaveGroup($this->getUser());
         $response = array('status' => "true");
         return new Response(json_encode_ex($response));

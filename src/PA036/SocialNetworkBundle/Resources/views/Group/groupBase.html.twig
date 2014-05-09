@@ -13,7 +13,6 @@
 
             $.get("{{ path('group_my_admin') }}")
                     .done(function (data) {
-
                         var response = jQuery.parseJSON(data);
                         var groupsMyAdmin = response.groups;
 
@@ -32,8 +31,8 @@
                                     var response = jQuery.parseJSON(data);
                                     var groupsMy = response.groups;
 
+                                    var loaded_groups = [];
                                     for (var key in groupsMyAdmin) {
-
                                         if (groupId === groupsMyAdmin[key].groupId) {
                                             activeClass = 'active';
                                             leaveClass = 'hide';
@@ -41,12 +40,15 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
+                                        loaded_groups.push(groupsMyAdmin[key].groupId);
                                         $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> <span class="pull-right fancybox edit" data-fancybox-href="group/edit?groupId=' + groupsMyAdmin[key].groupId + '"><i class="icon-edit"></i></span> <span class="pull-right leave ' + leaveClass + '" href="group/leave/' + groupsMyAdmin[key].groupId + '"><i class="icon-remove"></i></span></li>');
                                     }
 
                                     for (var key in groupsMy) {
-
-                                        if (groupId === groupsMyAdmin[key].groupId) {
+                                        if(loaded_groups.indexOf(groupsMy[key].groupId) != -1){
+                                            continue;
+                                        }
+                                        if (groupId === groupsMy[key].groupId) {
                                             activeClass = 'active';
                                             leaveClass = 'hide';
                                         } else {

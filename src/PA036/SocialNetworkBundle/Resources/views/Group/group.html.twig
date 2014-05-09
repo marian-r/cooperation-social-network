@@ -27,8 +27,6 @@
                 var only_post = post['post'];
                 var only_comments = post['comments'];
 
-                console.log(only_post)
-
                 $("<div></div>").attr('id', only_post['postId']).html("").prependTo('#posts');
                 $("<div></div>").html(only_post['text']).appendTo('#' + only_post['postId']);
                 $("<div class='like'></div>").html("<a href='#'>Like </a><span class='count'>" + only_post['likesCount'] + "</span>").appendTo('#' + only_post['postId']);
@@ -36,8 +34,6 @@
 
                 if (only_comments !== undefined) {
                     for (var key in only_comments) {
-                        console.log(only_comments[key]['text'])
-
                         $("<div></div>").attr('class', 'comment').html(only_comments[key]['text']).appendTo('#' + only_post['postId']);
 
                     }
