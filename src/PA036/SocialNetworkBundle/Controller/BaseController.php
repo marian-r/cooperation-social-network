@@ -84,6 +84,13 @@ abstract class BaseController extends Controller
 		return $this->findEntity('Post', array("postId" => $postId));
 	}
 
+    protected function findUserById($userId)
+    {
+        return $this->getDoctrine()
+            ->getManager()
+            ->getRepository("PA036AccountBundle:User")
+            ->findOneBy(array("userId" => $userId));
+    }
 
 	private function findEntity($entityName, array $filter)
 	{
@@ -92,4 +99,6 @@ abstract class BaseController extends Controller
 		        ->getRepository("PA036SocialNetworkBundle:$entityName")
 		        ->findOneBy($filter);
 	}
+
+
 }
