@@ -1,6 +1,8 @@
 {% extends 'PA036SocialNetworkBundle:Group:groupBase.html.twig' %}
 
-{% block title "page title" %}
+{% block title %}
+{% if group is defined %}{{ group.name }} - {% endif %}
+{% endblock %}
 
 {% block head %}
 

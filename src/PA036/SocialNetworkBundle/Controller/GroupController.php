@@ -205,12 +205,13 @@ class GroupController extends BaseController {
      * @Template("PA036SocialNetworkBundle:Group:group.html.twig")
      */
     public function groupAction($group_id) {
+	    $group = $this->findGroupById($group_id);
         $form = $this->createFormBuilder(new Post())
                 ->add('text', 'text')
                 ->add('add', 'submit')
                 ->getForm();
 
-        return array('form_post_add' => $form->createView());
+        return array('group' => $group, 'form_post_add' => $form->createView());
     }
 
 
