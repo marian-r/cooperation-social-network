@@ -27,20 +27,24 @@
                 var only_post = post['post'];
                 var only_comments = post['comments'];
 
-                $("<div></div>").attr('id', only_post['postId']).html("").prependTo('#posts');
-                $("<div></div>").html(only_post['text']).appendTo('#' + only_post['postId']);
-                $("<div class='like'></div>").html("<a href='#'>Like </a><span class='count'>" + only_post['likesCount'] + "</span>").appendTo('#' + only_post['postId']);
-
+                var $post = $("<div></div>").attr('id', only_post['postId']).appendTo('#posts');
+                $post.append($("<div>" + only_post['text'] + "</div>"));
+                $post.append($('<div class="like"></div>')
+                        .append('<a href="#">Like</a>')
+                        .append(' <span class="count">' + only_post['likesCount'] + '</span>')
+                );
+                var $comments = $('<div class="comments"></div>').appendTo($post);
 
                 if (only_comments !== undefined) {
                     for (var key in only_comments) {
-                        $("<div></div>").attr('class', 'comment').html(only_comments[key]['text']).appendTo('#' + only_post['postId']);
+                        $comments.append($('<div class="comment">' + only_comments[key]['text'] + '</div>'));
 
                     }
                 }
 
-                $("<div></div>").attr('class', 'comment_add').html("<input type='text' name='form_text' />").appendTo('#' + only_post['postId']);
-                //$("<div></div>").attr('class', 'comment_add').html("<input type='file' name='form_file' />").appendTo('#' + only_post['postId']);
+                $post.append($('<div class="comment_add"></div>')
+                        .append("<input type='text' name='form_text' />")
+                );
             }
         });
     }
@@ -65,9 +69,9 @@
                 groupId = {{ app.request.get('group_id') }};
                 {% endif %}
 
-                var comment = $(this).val();
-                var parent_id = $(this).parent().parent().attr("id");
-                var input = $(this);
+                var $input = $(this);
+                var comment = $input.val();
+                var parent_id = $input.parent().parent().attr("id");
 
                 $.post("{{ path('post_add') }}",
                         {form_text: comment, parent_id: parent_id, group_id: groupId})
@@ -76,8 +80,10 @@
                             var response = jQuery.parseJSON(data);
 
                             if (response.status === "true") {
-                                $("<div></div>").attr('class', 'comment').html(comment).prependTo($(input).parent());
-                                $(input).val("");
+                                var $comment = $('<div class="comment"></div>').html(comment);
+                                
+                                $input.parent().siblings('.comments').append($comment);
+                                $input.val("");
                             }
                         });
             }
