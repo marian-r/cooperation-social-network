@@ -8,6 +8,37 @@
 
 <script type="text/javascript">
 
+    function getPostElement(post) {
+        var $leftHeading = $('<div class="col-md-6">' + post['author'] + '</div>');
+
+        var $rightHeading = $('<div class="col-md-6 text-right"></div>');
+        $rightHeading.append('<span class="glyphicon glyphicon-time text-right"></span>');
+        $rightHeading.append(' <span>' + post['timestamp'] + '</span>');
+
+        var $postHeading = $('<div class="panel-heading"><div class="container"></div></div>');
+        $postHeading.append($('<div class="row"></div>').append($leftHeading).append($rightHeading));
+
+        var $postBody = $('<div class="panel-body">' + post['text'] + '</div>');
+        $postBody.append($('<div class="like"></div>')
+                .append('<a href="#">Like</a>')
+                .append(' <span class="count badge">' + post['likesCount'] + '</span>')
+        );
+
+        var $postPanel = $('<div class="post panel panel-default"></div>').attr('id', post['postId']);
+        $postPanel.append($postHeading);
+        $postPanel.append($postBody);
+        return $postPanel;
+    }
+
+    function getCommentElement(comment) {
+        var $comment = $('<li class="comment list-group-item"></li>');
+        $comment.append('<span class="author">' + comment['author'] + '</span>');
+        $comment.append(' <span class="glyphicon glyphicon-time"></span>');
+        $comment.append(' <span class="timestamp">' + comment['timestamp'] + '</span><br />');
+        $comment.append(' <span class="text">' + comment['text'] + '</span>');
+        return $comment;
+    }
+
     function updatePosts() {
         var groupId = '';
         {% if app.request.get('group_id') != '' %}
@@ -27,22 +58,12 @@
                 var only_post = post['post'];
                 var only_comments = post['comments'];
 
-                var $postPanel = $('<div class="post panel panel-default"></div>').attr('id', only_post['postId']).appendTo('#posts');
-                $postPanel.append($('<div class="panel-heading">' + only_post['author'] + '</div>'));
-                var $postBody = $('<div class="panel-body">' + only_post['text'] + '</div>');
-                $postBody.append($('<div class="like"></div>')
-                        .append('<a href="#">Like</a>')
-                        .append(' <span class="count badge">' + only_post['likesCount'] + '</span>')
-                );
-                $postPanel.append($postBody);
-
+                var $postPanel = getPostElement(only_post);
                 var $comments = $('<ul class="comments list-group"></ul>').appendTo($postPanel);
 
                 if (only_comments !== undefined) {
                     for (var key in only_comments) {
-                        var commentData = only_comments[key]
-                        var $comment = getCommentElement(commentData['author'], commentData['text']);
-
+                        var $comment = getCommentElement(only_comments[key]);
                         $comments.append($comment);
                     }
                 }
@@ -51,16 +72,12 @@
                         .append('<input type="text" name="form_text" class="form-control input-sm"' +
                                 'placeholder="Write a comment..." />')
                 );
+
+                $postPanel.prependTo('#posts');
             }
         });
     }
 
-    function getCommentElement(author, text) {
-        var $comment = $('<li class="comment list-group-item"></li>');
-        $comment.append('<span class="author">' + author + '</span>');
-        $comment.append(' <span class="text">' + text + '</span>');
-        return $comment;
-    }
 
     $(document).ready(function() {
 
@@ -94,8 +111,7 @@
                             var response = jQuery.parseJSON(data);
 
                             if (response.status === "true") {
-                                var author = '{{ app.user.fullName|escape('js')}}';
-                                var $comment = getCommentElement(author, comment);
+                                var $comment = getCommentElement(response.post);
 
                                 $input.parent().siblings('.comments').append($comment);
                                 $input.val("");

@@ -25,10 +25,11 @@ class PostController extends BaseController
 					->addPost($this->getUser(), $text, $group, $request->files);
 		} else {
 			$parentPost = $this->findPostById($parent_id);
-			$this->getPostService()->commentPost($parentPost, $this->getUser(), $text);
+			$return = $this->getPostService()->commentPost($parentPost, $this->getUser(), $text);
 		}
 
 		$response['status'] = "true";
+		$response['post'] = $return;
 
 		return new Response(json_encode_ex($response));
 	}
