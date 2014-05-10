@@ -39,6 +39,12 @@ class Conversation
 	 */
 	private $members;
 
+    /**
+     * @var string
+     *
+     */
+    private $initialMessage;
+
 	public function __construct()
 	{
 		$this->members = new ArrayCollection();
@@ -70,6 +76,22 @@ class Conversation
 	{
 		return $this->members;
 	}
+
+    /**
+     * @param string $initialMessage
+     */
+    public function setInitialMessage($initialMessage)
+    {
+        $this->initialMessage = $initialMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitialMessage()
+    {
+        return $this->initialMessage;
+    }
 
 
 }
