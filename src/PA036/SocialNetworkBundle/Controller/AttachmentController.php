@@ -14,21 +14,23 @@ use Symfony\Component\HttpFoundation\Response;
 class AttachmentController extends BaseController
 {
 	/**
-	 * @Route("/download/{id}")
+	 * @Route("/download/{id}", name="attachment_download")
 	 */
 	public function downloadAction($id)
 	{
 		$post = $this->findPostById($id);
 		$attachment = $post->getAttachments()->first();
 
-		$fileName = $attachment->getName();
+                $fileName = $attachment->getName();
+                                                
+                $attachmentPath = '../web/attachments/' . $post->getPostId() . '/' . $fileName;
 
 		$response = new Response();
 		$response->headers->set('Cache-Control', 'private');
 		$response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '";');
 		//$response->headers->set('Content-length', filesize($filename));
 
-		$response->setContent(stream_get_contents($attachment->getBinaryData()));
+		$response->setContent((file_get_contents($attachmentPath)));
 
 		return $response;
 	}

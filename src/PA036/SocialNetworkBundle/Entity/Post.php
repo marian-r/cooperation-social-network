@@ -215,7 +215,8 @@ class Post implements \JsonSerializable {
             'author' => $this->user->getFullName(),
             'timestamp' => $this->timestamp->format("Y-m-d H:i:s"),
             'likesCount' => $this->likesCount,
-            'seensCount' => $this->seensCount
+            'seensCount' => $this->seensCount,
+            'attachment1' => $this->attachments->count() != 0 ? $this->attachments->get(0)->getAttachmentId() : '',
         );
     }
 

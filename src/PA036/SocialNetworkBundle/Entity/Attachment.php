@@ -21,12 +21,12 @@ class Attachment {
      */
     private $attachmentId;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="string", length=100, nullable=false)
-	 */
-	private $name;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     */
+    private $name;
 
     /**
      * @var string
@@ -68,13 +68,13 @@ class Attachment {
         return $this->attachmentId;
     }
 
-	public function setName($name) {
-		$this->name = $name;
-	}
+    public function setName($name) {
+        $this->name = $name;
+    }
 
-	public function getName() {
-		return $this->name;
-	}
+    public function getName() {
+        return $this->name;
+    }
 
     public function setBinaryData($binaryData) {
         $this->binaryData = $binaryData;
@@ -118,21 +118,20 @@ class Attachment {
     public function setFileHandler($fileHandler) {
         $this->fileHandler = $fileHandler;
     }
-    
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function saveFileContent() {
-        $tmpName = md5(uniqid(mt_rand(), true)) . '.' . $this->fileHandler->guessExtension();
-	    $tmpPath = '../web/tmp/' . $tmpName;
+        $attachmentName = $this->fileHandler->getClientOriginalName();
+        $attachmentPath = '../web/attachments/' . $this->post->getPostId() .'/'. $attachmentName;
         try {
-	        $this->name = $this->fileHandler->getClientOriginalName();
-	        $this->fileHandler->move('../web/tmp/', $tmpName);
+            $this->name = $this->fileHandler->getClientOriginalName();
+            $this->fileHandler->move('../web/attachments/' . $this->post->getPostId() .'/', $attachmentName);
         } catch (\Exception $e) {
             print_r($e);
         }
-        $this->setBinaryData(file_get_contents($tmpPath));
-        unlink($tmpPath);
+        $this->setBinaryData(file_get_contents($attachmentPath));
     }
 }

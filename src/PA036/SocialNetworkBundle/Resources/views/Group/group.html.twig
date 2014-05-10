@@ -15,7 +15,15 @@
                 .append($('<a href="#">Like</a>').data('post-id', post['postId']))
                 .append(' <span class="count badge">' + post['likesCount'] + '</span>');
     }
+    
+    function getAttachmentElement(post) {
+        var path = "{{ path('attachment_download', { 'id': "PLACEHOLDER" }) }}";
+        path = path.replace("PLACEHOLDER", post['postId']);    
 
+        return $('<div class="attachment"></div>')
+                .append($('<a href="'+path+'">Download attachment</a>'));
+    }
+    
     function getPostElement(post) {
         var $leftHeading = $('<div class="col-md-6"></div>').text(post['author']);
 
@@ -29,6 +37,10 @@
         var $postBody = $('<div class="panel-body"></div>').text(post['text']);
         $postBody.append(getLikeElement(post));
 
+        if(post['attachment1'] !== '') {
+            $postBody.append(getAttachmentElement(post));
+        }
+        
         var $postPanel = $('<div class="post panel panel-default"></div>')
                 .attr('id', 'post-' + post['postId'])
                 .data('post-id', post['postId']);
