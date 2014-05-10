@@ -79,6 +79,19 @@
 
         }
 
+        function getMessageElement(message){
+            var html = '';
+            html += '<div class="conversation_message">';
+            html += '   <div class="conversation_message_header">';
+            html += '       <span class="conversation_message_author">' + message.user.full_name + '</span>';
+            html += '       <span class="glyphicon glyphicon-time"></span>';
+            html += '       <span class="conversation_message_time">' + message.timestamp + '</span>';
+            html += '   </div>';
+            html += '   <div class="conversation_message_body panel-body">' + message.body + "</div>";
+            html += '</div>';
+            return html;
+        }
+
         function updateConversations(){
             $.get("{{ path('conversation_my') }}")
                     .done(function (data) {
@@ -93,23 +106,38 @@
                         html += '   <div class="conversation_messages">';
 
                         for(j in conversation.messages){
-                            var message = conversation.messages[j];
-
-                            html += '<div class="conversation_message">';
-                            html += '   <div class="conversation_message_header">';
-                            html += '       <span class="conversation_message_author">' + message.user.full_name + '</span>';
-                            html += '       <span class="glyphicon glyphicon-time"></span>';
-                            html += '       <span class="conversation_message_time">' + message.timestamp + '</span>';
-                            html += '   </div>';
-                            html += '   <div class="conversation_message_body">' + message.body + "</div>";
-                            html += '</div>';
+                            html += getMessageElement(conversation.messages[j]);
                         }
 
                         html += '   </div>';
+                        html += '   <textarea rows="" cols="" class="input-sm"></textarea>';
                         html += '</div>';
 
                         $('#conversations').append(html);
                     }
+            });
+
+
+            $(document.body).on('keydown', '#conversations textarea', function(event) {
+                //allow shift enter
+                if (event.keyCode === 13 && !event.shiftKey) {
+                    var $input = $(this);
+                    var message = $input.val();
+                    var $parent =  $input.parents(".conversation");
+                    var conversation_id = $parent.attr("data-id");
+
+                    $.post("{{ path('conversation_message') }}",
+                            {conversation_id: conversation_id, message: message})
+                            .done(function (data) {
+                                var response = jQuery.parseJSON(data);
+                                if (response.status === "true") {
+                                    var message = getMessageElement(response.message);
+                                    $parent.find(".conversation_messages").append(message);
+                                }
+                            });
+                    $input.val("");
+                    event.preventDefault();
+                }
             });
         }
 
@@ -128,7 +156,6 @@
                     updateGroupMenu();
                 }
             });
-
 
         });
 

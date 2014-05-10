@@ -29,7 +29,7 @@
             ).done(function( data ) {
                         var response = jQuery.parseJSON(data);
                         if(response.status === "true"){
-                            parent.jQuery.fancybox.close();
+                            parent.window.location.reload();
                         }
                     });
 

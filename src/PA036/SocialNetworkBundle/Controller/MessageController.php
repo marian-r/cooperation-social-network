@@ -80,4 +80,22 @@ class MessageController extends BaseController
         }
         return new Response(json_encode_ex($response));
     }
+
+    /**
+     * @Route("/conversation/message", name="conversation_message")
+     */
+    public function messageAction(Request $request) {
+        $message_body = $request->request->get("message");
+
+        $conversationId = $request->request->get("conversation_id");
+        $conversation = $this->findConversationById($conversationId);
+
+        $return = $this->getMessageService()
+                ->sendMessage($this->getUser(), $conversation, $message_body);
+
+        $response['status'] = "true";
+        $response['message'] = $return;
+
+        return new Response(json_encode_ex($response));
+    }
 }
