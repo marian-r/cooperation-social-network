@@ -19,7 +19,7 @@ class MessageController extends BaseController
 {
 
     /**
-     * @Route("/add", name="new_conversation")
+     * @Route("/conversation/add", name="new_conversation")
      * @Template()
      */
     public function addAction(Request $request) {
@@ -66,5 +66,18 @@ class MessageController extends BaseController
         }
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * @Route("/conversation/my", name="conversation_my")
+     */
+    public function myAction() {
+        $response['conversations'] = $this->getUser()->getMemberOfConversations();
+        foreach($response['conversations'] as &$conversation_member){
+            $conversation_member->getConversation()->setMessages(
+                $this->getMessageService()->findMessagesByConversation($conversation_member->getConversation())
+            );
+        }
+        return new Response(json_encode_ex($response));
     }
 }

@@ -13,7 +13,7 @@ use PA036\SocialNetworkBundle\Entity\Message;
  * @ORM\Table(name="conversations")
  * @ORM\Entity
  */
-class Conversation
+class Conversation implements \JsonSerializable
 {
 	/**
 	 * @var integer
@@ -44,6 +44,11 @@ class Conversation
      *
      */
     private $initialMessage;
+
+    /**
+     * @var Collection|Message[]
+     */
+    private $messages;
 
 	public function __construct()
 	{
@@ -91,6 +96,26 @@ class Conversation
     public function getInitialMessage()
     {
         return $this->initialMessage;
+    }
+
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getConversationId(),
+            'name' => $this->getName(),
+            'messages' => $this->getMessages(),
+        );
+    }
+
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+    }
+
+    public function getMessages()
+    {
+        return $this->messages;
     }
 
 

@@ -15,7 +15,7 @@ use PA036\SocialNetworkBundle\Entity\Post;
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="PA036\AccountBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable {
+class User implements UserInterface, \Serializable , \JsonSerializable{
 
     /**
      * @var integer
@@ -82,6 +82,13 @@ class User implements UserInterface, \Serializable {
 
     private $salt;
     private $isActive;
+
+    /**
+     * @var Collection|ConversationMember[]
+     *
+     * @ORM\OneToMany(targetEntity="\PA036\SocialNetworkBundle\Entity\ConversationMember", mappedBy="user")
+     */
+    private $memberOfConversations;
 
     public function __construct() {
         $this->groupsMaps = new ArrayCollection();
@@ -218,4 +225,24 @@ class User implements UserInterface, \Serializable {
 	{
 		return "$this->firstName $this->lastName";
 	}
+
+    public function setMemberOfConversations($memberOfConversations)
+    {
+        $this->memberOfConversations = $memberOfConversations;
+    }
+
+    public function getMemberOfConversations()
+    {
+        return $this->memberOfConversations;
+    }
+
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getUserId(),
+            'full_name' => $this->getFullName(),
+            'email' => $this->getEmail(),
+        );
+    }
 }

@@ -13,7 +13,7 @@ use PA036\SocialNetworkBundle\Entity\Conversation;
  * @ORM\Table(name="messages", indexes={@ORM\Index(name="IDX_DB021E967597D3FE", columns={"member_id"})})
  * @ORM\Entity
  */
-class Message
+class Message implements \JsonSerializable
 {
     /**
      * @var integer
@@ -117,10 +117,19 @@ class Message
     /**
      * @return Conversation
      */
-    public function getConversation()
+/*    public function getConversation()
     {
         return $this->conversation;
     }
+*/
 
-
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getMessageId(),
+            'body' => $this->getBody(),
+            'user' => $this->getMember()->getUser(),
+            'timestamp' => $this->getTimestamp(),
+        );
+    }
 }

@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="conversation_members")
  * @ORM\Entity
  */
-class ConversationMember
+class ConversationMember implements \JsonSerializable
 {
 	/**
 	 * @var integer
@@ -69,5 +69,13 @@ class ConversationMember
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->getMemberId(),
+            'conversation' => $this->getConversation(),
+        );
     }
 }
