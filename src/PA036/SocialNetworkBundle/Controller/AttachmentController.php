@@ -21,16 +21,19 @@ class AttachmentController extends BaseController
 		$post = $this->findPostById($id);
 		$attachment = $post->getAttachments()->first();
 
-                $fileName = $attachment->getName();
-                                                
-                $attachmentPath = '../web/attachments/' . $post->getPostId() . '/' . $fileName;
+        $fileName = $attachment->getName();
+
+        //$attachmentPath = '../web/attachments/' . $post->getPostId() . '/' . $fileName;
 
 		$response = new Response();
 		$response->headers->set('Cache-Control', 'private');
 		$response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '";');
-		//$response->headers->set('Content-length', filesize($filename));
 
-		$response->setContent((file_get_contents($attachmentPath)));
+        $content = stream_get_contents($attachment->getBinaryData());
+        $content = substr($content, 1);
+        $content = pack("H*" , $content);
+		$response->setContent($content);
+        $response->headers->set('Content-length', strlen($content));
 
 		return $response;
 	}
