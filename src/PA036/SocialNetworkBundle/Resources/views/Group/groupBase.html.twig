@@ -1,7 +1,17 @@
 {% extends 'PA036SocialNetworkBundle::layout.html.twig' %}
 
-{% block head %}
+{% block javascripts %}
+{{ parent() }}
+{% javascripts
+    '@PA036SocialNetworkBundle/Resources/public/js/Class.create.js'
+    '@PA036SocialNetworkBundle/Resources/public/js/encoder.js'
+%}
 
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block head %}
     <script type="text/javascript">
         function updateGroupMenu() {
             var groupId;
@@ -83,11 +93,11 @@
             var html = '';
             html += '<div class="conversation_message">';
             html += '   <div class="conversation_message_header">';
-            html += '       <span class="conversation_message_author">' + message.user.full_name + '</span>';
+            html += '       <span class="conversation_message_author">' +  $.encoder.encodeForHTML(message.user.full_name) + '</span>';
             html += '       <span class="glyphicon glyphicon-time"></span>';
             html += '       <span class="conversation_message_time">' + message.timestamp + '</span>';
             html += '   </div>';
-            html += '   <div class="conversation_message_body panel-body">' + message.body + "</div>";
+            html += '   <div class="conversation_message_body panel-body">' +  $.encoder.encodeForHTML(message.body) + "</div>";
             html += '</div>';
             return html;
         }
@@ -102,7 +112,7 @@
 
                         var html = '';
                         html += '<div class="conversation panel panel-default" data-id="' + conversation.id + '">';
-                        html += '   <div class="conversation_name panel-heading">' +  conversation.name + '</div>';
+                        html += '   <div class="conversation_name panel-heading">' +   $.encoder.encodeForHTML(conversation.name) + '</div>';
                         html += '   <div class="conversation_messages">';
 
                         for(j in conversation.messages){
