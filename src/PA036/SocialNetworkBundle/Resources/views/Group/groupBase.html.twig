@@ -79,8 +79,43 @@
 
         }
 
+        function updateConversations(){
+            $.get("{{ path('conversation_my') }}")
+                    .done(function (data) {
+                    data = jQuery.parseJSON(data);
+                    for(i in data.conversations){
+                        var conversation_member = data.conversations[i];
+                        var conversation = conversation_member.conversation;
+
+                        var html = '';
+                        html += '<div class="conversation panel panel-default" data-id="' + conversation.id + '">';
+                        html += '   <div class="conversation_name panel-heading">' +  conversation.name + '</div>';
+                        html += '   <div class="conversation_messages">';
+
+                        for(j in conversation.messages){
+                            var message = conversation.messages[j];
+
+                            html += '<div class="conversation_message">';
+                            html += '   <div class="conversation_message_header">';
+                            html += '       <span class="conversation_message_author">' + message.user.full_name + '</span>';
+                            html += '       <span class="glyphicon glyphicon-time"></span>';
+                            html += '       <span class="conversation_message_time">' + message.timestamp + '</span>';
+                            html += '   </div>';
+                            html += '   <div class="conversation_message_body">' + message.body + "</div>";
+                            html += '</div>';
+                        }
+
+                        html += '   </div>';
+                        html += '</div>';
+
+                        $('#conversations').append(html);
+                    }
+            });
+        }
+
         $(document).ready(function () {
             updateGroupMenu();
+            updateConversations();
 
             $(".fancybox").fancybox({
                 // API options

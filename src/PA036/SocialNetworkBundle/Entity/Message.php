@@ -129,7 +129,7 @@ class Message implements \JsonSerializable
             'id' => $this->getMessageId(),
             'body' => $this->getBody(),
             'user' => $this->getMember()->getUser(),
-            'timestamp' => $this->getTimestamp(),
+            'timestamp' => $this->getTimestamp()->format("Y-m-d H:i:s"),
         );
     }
 }
