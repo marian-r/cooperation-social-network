@@ -1,0 +1,94 @@
+{% extends 'PA036SocialNetworkBundle:Group:groupBase.html.twig' %}
+
+{% block title %}
+    {% if conversation is defined %}{{ conversation.name }} - {% endif %}
+{% endblock %}
+
+
+{% block head %}
+
+    {{ parent() }}
+
+    <script>
+
+        function getMessageElement(message) {
+            var $author = $('<span class="conversation_message_author"></span>')
+                    .text(message.user.full_name);
+
+            var $header = $('<div class="conversation_message_header">');
+            $header.append($author);
+            $header.append(' <span class="glyphicon glyphicon-time"></span>');
+            $header.append('<span class="conversation_message_time">' + message.timestamp + '</span>');
+
+            var $body = $('<div class="well well-sm"></div>').text(message.body);
+
+            return $('<div class="conversation_message">')
+                    .append($header)
+                    .append($body);
+        }
+
+        function updateMessages() {
+            $.get("{{ path('conversation_messages', { 'id': conversation.conversationId }) }}")
+                    .done(function (data) {
+                        data = jQuery.parseJSON(data);
+
+                        for (i in data.messages) {
+                            var message = data.messages[i];
+
+                            $('#messages').append(getMessageElement(message));
+                        }
+                    });
+        }
+
+
+        $(document).ready(function () {
+            updateMessages();
+
+            $(document.body).on('keydown', 'textarea#message', function (event) {
+                console.log(event.keyCode);
+                //allow shift enter
+                if (event.keyCode === 13 && !event.shiftKey) {
+                    var $input = $(this);
+                    var message = $input.val();
+                    var conversation_id = {{ conversation.conversationId }};
+
+                    $.post("{{ path('conversation_message') }}",
+                            {conversation_id: conversation_id, message: message})
+                            .done(function (data) {
+                                var response = jQuery.parseJSON(data);
+                                if (response.status === "true") {
+                                    $('#messages').append(getMessageElement(response.message));
+                                }
+                            });
+                    $input.val("");
+                    event.preventDefault();
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="col-md-9">
+    <h1>{{ conversation.name }}</h1>
+
+    <div class="members panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Members</h3>
+        </div>
+        <div class="panel-body">
+            {% for member in conversation.members %}
+                <span>{{ member.user.fullName|e }}</span>{% if not loop.last %},{% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="messages"></div>
+
+    <textarea id="message" rows="" cols="" class="form-control input-sm"></textarea>
+</div>
+
+{% endblock %}

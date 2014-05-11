@@ -1,16 +1,5 @@
 {% extends 'PA036SocialNetworkBundle::layout.html.twig' %}
 
-{% block javascripts %}
-{{ parent() }}
-{% javascripts
-    '@PA036SocialNetworkBundle/Resources/public/js/Class.create.js'
-    '@PA036SocialNetworkBundle/Resources/public/js/encoder.js'
-%}
-
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-{% endblock %}
-
 {% block head %}
     <script type="text/javascript">
         function updateGroupMenu() {
@@ -89,66 +78,37 @@
 
         }
 
-        function getMessageElement(message){
-            var html = '';
-            html += '<div class="conversation_message">';
-            html += '   <div class="conversation_message_header">';
-            html += '       <span class="conversation_message_author">' +  $.encoder.encodeForHTML(message.user.full_name) + '</span>';
-            html += '       <span class="glyphicon glyphicon-time"></span>';
-            html += '       <span class="conversation_message_time">' + message.timestamp + '</span>';
-            html += '   </div>';
-            html += '   <div class="conversation_message_body panel-body">' +  $.encoder.encodeForHTML(message.body) + "</div>";
-            html += '</div>';
-            return html;
-        }
+        function updateConversations() {
+            var conversationId;
+            {% if conversation is defined %}
+            conversationId = {{ conversation.conversationId }}
+            {% endif %}
 
-        function updateConversations(){
             $.get("{{ path('conversation_my') }}")
                     .done(function (data) {
-                    data = jQuery.parseJSON(data);
-                    for(i in data.conversations){
-                        var conversation_member = data.conversations[i];
-                        var conversation = conversation_member.conversation;
+                        data = jQuery.parseJSON(data);
+                        var path = "{{ path('conversation', { 'id': "PLACEHOLDER" }) }}";
 
-                        var html = '';
-                        html += '<div class="conversation panel panel-default" data-id="' + conversation.id + '">';
-                        html += '   <div class="conversation_name panel-heading">' +   $.encoder.encodeForHTML(conversation.name) + '</div>';
-                        html += '   <div class="conversation_messages">';
+                        var $loading = $('ul#conversation .loading');
 
-                        for(j in conversation.messages){
-                            html += getMessageElement(conversation.messages[j]);
+                        for (i in data.conversations) {
+                            var conversation_member = data.conversations[i];
+                            var conversation = conversation_member.conversation;
+
+                            console.log(conversation);
+
+                            var $link = $('<a></a>').text(conversation.name)
+                                    .attr('href', path.replace("PLACEHOLDER", conversation.id));
+
+                            var $item = $('<li></li>').append($link);
+                            if (conversation.id == conversationId) {
+                                $item.addClass('active');
+                            }
+
+                            $loading.before($item);
                         }
-
-                        html += '   </div>';
-                        html += '   <textarea rows="" cols="" class="input-sm"></textarea>';
-                        html += '</div>';
-
-                        $('#conversations').append(html);
-                    }
-            });
-
-
-            $(document.body).on('keydown', '#conversations textarea', function(event) {
-                //allow shift enter
-                if (event.keyCode === 13 && !event.shiftKey) {
-                    var $input = $(this);
-                    var message = $input.val();
-                    var $parent =  $input.parents(".conversation");
-                    var conversation_id = $parent.attr("data-id");
-
-                    $.post("{{ path('conversation_message') }}",
-                            {conversation_id: conversation_id, message: message})
-                            .done(function (data) {
-                                var response = jQuery.parseJSON(data);
-                                if (response.status === "true") {
-                                    var message = getMessageElement(response.message);
-                                    $parent.find(".conversation_messages").append(message);
-                                }
-                            });
-                    $input.val("");
-                    event.preventDefault();
-                }
-            });
+                        $loading.hide();
+                    });
         }
 
         $(document).ready(function () {
@@ -187,10 +147,9 @@
 
     <div class="panel panel-primary">
         <div class="panel-heading">Conversations</div>
-        <ul id="group" class="nav nav-list">
+        <ul id="conversation" class="nav nav-list">
             <li><a href="#" class="fancybox" data-fancybox-href="{{ path('new_conversation')}}">New conversation</a></li>
-            <div id="conversations">
-            </div>
+            <li class="loading">Loading...</li>
         </ul>
 
     </div>

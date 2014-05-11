@@ -17,6 +17,27 @@ use PA036\SocialNetworkBundle\Entity\Message;
 
 class MessageController extends BaseController
 {
+	/**
+	 * @Route("/conversation/index/{id}", name="conversation")
+	 * @Template()
+	 */
+	public function indexAction($id)
+	{
+		$conversation = $this->findConversationById($id);
+		return array("conversation" => $conversation);
+	}
+
+
+	/**
+	 * @Route("/conversation/messages/{id}", name="conversation_messages")
+	 */
+	public function messagesAction($id)
+	{
+		$conversation = $this->findConversationById($id);
+		$response['messages'] = $this->getMessageService()->findMessagesByConversation($conversation);
+		return new Response(json_encode_ex($response));
+	}
+
 
     /**
      * @Route("/conversation/add", name="new_conversation")
@@ -29,7 +50,8 @@ class MessageController extends BaseController
         $transformer->em = $this->getDoctrine()->getManager();
 
         $builder = $this->createFormBuilder($conversation)
-            ->add('name', 'text')->add('initialMessage', 'textarea');
+                ->add('name', 'text')
+		        ->add('initialMessage', 'textarea');
         $builder->add(
             $builder->create('members', 'text', array(
                 'required' => false,
