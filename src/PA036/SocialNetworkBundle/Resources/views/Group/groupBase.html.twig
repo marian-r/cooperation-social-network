@@ -15,8 +15,8 @@
     <script type="text/javascript">
         function updateGroupMenu() {
             var groupId;
-            {% if groupId is defined %}
-            groupId = {{ groupId }}
+            {% if group is defined %}
+            groupId = {{ group.groupId }}
             {% endif %}
 
             $('#group .loading').show();
@@ -177,20 +177,22 @@
 {% block sidebar %}
 
 <div class="col-md-3">
-    <div class="well sidebar-nav">
+    <div class="panel panel-primary">
+        <div class="panel-heading">My groups</div>
         <ul id="group" class="nav nav-list">
-            <li class="nav-header">My groups</li>
             <li><a href="#" class="fancybox" data-fancybox-href="{{ path('group_add') }}">Add group</a></li>
             <li class="loading">Loading...</li>
         </ul>
     </div>
 
-    <div class="well sidebar-nav">
-        <div id="conversations">
-        </div>
-        <div id="start_new">
-            <span class="fancybox" data-fancybox-href="{{ path('new_conversation')}}">New conversation</span>
-        </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Conversations</div>
+        <ul id="group" class="nav nav-list">
+            <li><a href="#" class="fancybox" data-fancybox-href="{{ path('new_conversation')}}">New conversation</a></li>
+            <div id="conversations">
+            </div>
+        </ul>
+
     </div>
 </div>
 

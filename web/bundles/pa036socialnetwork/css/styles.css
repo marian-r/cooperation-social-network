@@ -66,9 +66,18 @@ body {
 .edit, .leave {
     cursor: pointer;
 }
+.loading {
+    padding: 10px 15px;
+}
 
 .active {
-    color: red;
+    background-color: #428bca !important;
+}
+.active a {
+    color: #fff !important;
+}
+.active a:hover {
+    background-color: #428bca !important;
 }
 
 /* posts */
