@@ -29,7 +29,9 @@
             ).done(function( data ) {
                         var response = jQuery.parseJSON(data);
                         if(response.status === "true"){
-                            parent.window.location.reload();
+                            var path = "{{ path('conversation', { 'id': "PLACEHOLDER" }) }}";
+                            path = path.replace("PLACEHOLDER", response.id);
+                            parent.window.location.href = path;
                         }
                     });
 

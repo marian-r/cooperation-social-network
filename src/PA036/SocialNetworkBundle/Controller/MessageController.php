@@ -78,8 +78,9 @@ class MessageController extends BaseController
                     }
                 }
 
-                if ($service->startConversation($this->getUser(), $members, $conversation->getInitialMessage(), $conversation->getName())) {
+                if ($conversation = $service->startConversation($this->getUser(), $members, $conversation->getInitialMessage(), $conversation->getName())) {
                     $response['status'] = "true";
+                    $response['id'] = $conversation->getConversationId();
                 } else {
                     $response['status'] = "false";
                 }
