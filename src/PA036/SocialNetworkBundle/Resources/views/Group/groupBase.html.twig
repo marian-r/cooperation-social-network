@@ -20,12 +20,8 @@
                                     $('ul#group li.group').remove();
 
                                     var activeClass = '', leaveClass = '';
-                                    var path = "{{ app.request.uri }}";
-                                    path = path.replace(path.substring(path.lastIndexOf('/') + 1), '')
 
-                                    if (path.indexOf("group") === -1) {
-                                        path += 'group/';
-                                    }
+                                    var path = "{{ path('group', { 'group_id': "PLACEHOLDER" }) }}";
 
                                     var response = jQuery.parseJSON(data);
                                     var groupsMy = response.groups;
@@ -39,8 +35,10 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
+                                        var link = path.replace("PLACEHOLDER", groupsMyAdmin[key].groupId);
+
                                         loaded_groups.push(groupsMyAdmin[key].groupId);
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMyAdmin[key].groupId + '">' + groupsMyAdmin[key].name + '</a> ' +
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + link + '">' + groupsMyAdmin[key].name + '</a> ' +
                                                 '<span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMyAdmin[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span> ' +
                                                 '<span class="pull-right fancybox edit" data-fancybox-href="{{ path('group_edit')}}?groupId=' + groupsMyAdmin[key].groupId + '"><i class="glyphicon glyphicon-edit"></i></span></li>');
                                     }
@@ -56,7 +54,9 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
-                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + path + groupsMy[key].groupId + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span>');
+                                        var link = path.replace("PLACEHOLDER", groupsMyAdmin[key].groupId);
+
+                                        $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + link + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span>');
                                     }
 
                                     $('#group .loading').hide();
