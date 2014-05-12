@@ -31,11 +31,14 @@
             $.get("{{ path('conversation_messages', { 'id': conversation.conversationId }) }}")
                     .done(function (data) {
                         data = jQuery.parseJSON(data);
+                        var messages = data.messages;
 
-                        for (i in data.messages) {
-                            var message = data.messages[i];
+                        messages.sort(function(a, b){
+                            return sortByTimestamp(a, b);
+                        });
 
-                            $('#messages').append(getMessageElement(message));
+                        for (i in messages) {
+                            $('#messages').append(getMessageElement(messages[i]));
                         }
                     });
         }
