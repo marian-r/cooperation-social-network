@@ -54,7 +54,7 @@
                                             activeClass = '';
                                             leaveClass = '';
                                         }
-                                        var link = path.replace("PLACEHOLDER", groupsMyAdmin[key].groupId);
+                                        var link = path.replace("PLACEHOLDER", groupsMy[key].groupId);
 
                                         $('ul#group .loading').before('<li class="group clearfix ' + activeClass + '"><a class="pull-left" href="' + link + '">' + groupsMy[key].name + '</a> <span class="pull-right leave ' + leaveClass + '" href="{{ path('group_leave')}}?groupId=' + groupsMy[key].groupId + '" data-id="'+groupsMy[key].groupId+'"><i class="glyphicon glyphicon-remove"></i></span>');
                                     }
