@@ -2,6 +2,11 @@
 /app/.src/
 /app/logs/
 /app/cache/
-/nbproject
-/vendor
+/app/bootstrap*
+/nbproject/
+/vendor/
+/web/bundles/
+/web/css/
+/web/fonts/
+/web/js/
 /web/tmp/
