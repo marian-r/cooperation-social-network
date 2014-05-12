@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9039f4bac5f48b7cd826901b2597a8b7",
+    "hash": "6e11a27e7e616212859ecfc1779431b2",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1773,6 +1773,52 @@
                 "templating"
             ],
             "time": "2014-02-13 10:19:29"
+        },
+        {
+            "name": "uran1980/fancybox-bundle",
+            "version": "dev-master",
+            "target-dir": "Uran1980/FancyBoxBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uran1980/fancybox-bundle.git",
+                "reference": "c877d12a0371f82f5e961604c21ee7afcee438a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uran1980/fancybox-bundle/zipball/c877d12a0371f82f5e961604c21ee7afcee438a8",
+                "reference": "c877d12a0371f82f5e961604c21ee7afcee438a8",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": ">=2.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Uran1980\\FancyBoxBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Yakovlev",
+                    "email": "uran1980@gmail.com",
+                    "homepage": "https://github.com/uran1980"
+                }
+            ],
+            "description": "jQuery FancyBox Bundle for Symfony2",
+            "homepage": "http://www.fancyapps.com/fancybox/",
+            "keywords": [
+                "fancybox",
+                "javascript",
+                "jquery",
+                "symfony"
+            ],
+            "time": "2013-05-26 22:36:56"
         }
     ],
     "packages-dev": [
@@ -1782,9 +1828,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "uran1980/fancybox-bundle": 20
+    },
     "platform": {
         "php": ">=5.3.3"
     },

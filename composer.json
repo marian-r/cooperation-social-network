@@ -23,7 +23,8 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "~3.0",
         "jquery/jquery": "1.10.*",
-        "oyejorge/less.php": "~1.5"
+        "oyejorge/less.php": "~1.5",
+        "uran1980/fancybox-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

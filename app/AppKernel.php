@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Uran1980\FancyBoxBundle\Uran1980FancyBoxBundle(),
             new PA036\AccountBundle\PA036AccountBundle(),
             new PA036\SocialNetworkBundle\PA036SocialNetworkBundle(),
         );
