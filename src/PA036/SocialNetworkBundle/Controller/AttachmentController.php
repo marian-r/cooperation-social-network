@@ -23,8 +23,6 @@ class AttachmentController extends BaseController
 
         $fileName = $attachment->getName();
 
-        //$attachmentPath = '../web/attachments/' . $post->getPostId() . '/' . $fileName;
-
 		$response = new Response();
 		$response->headers->set('Cache-Control', 'private');
 		$response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '";');
@@ -32,6 +30,7 @@ class AttachmentController extends BaseController
         $content = stream_get_contents($attachment->getBinaryData());
         $content = substr($content, 1);
         $content = pack("H*" , $content);
+
 		$response->setContent($content);
         $response->headers->set('Content-length', strlen($content));
 
