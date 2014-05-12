@@ -1,8 +1,8 @@
 {
-    "name": "symfony/framework-standard-edition",
+    "name": "marian-r/cooperation-social-network",
     "license": "MIT",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Social network for cooperation within an organization, developed as a school project.",
     "autoload": {
         "psr-0": {"": "src/"}
     },
@@ -21,9 +21,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "ircmaxell/password-compat": "~1.0.3",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "twbs/bootstrap": "3.0.0",
+        "twbs/bootstrap": "~3.0",
         "jquery/jquery": "1.10.*",
-        "leafo/lessphp": "0.4.0"
+        "oyejorge/less.php": "~1.5"
     },
     "scripts": {
         "post-install-cmd": [
