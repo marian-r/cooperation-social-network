@@ -4,4 +4,4 @@
 /app/cache/
 /nbproject
 /vendor
-/web/attachments/**
+/web/tmp/

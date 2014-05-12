@@ -124,14 +124,16 @@ class Attachment {
      * @ORM\PreUpdate()
      */
     public function saveFileContent() {
-        $attachmentName = $this->fileHandler->getClientOriginalName();
-        $attachmentPath = '../web/attachments/' . $this->post->getPostId() .'/'. $attachmentName;
-        try {
-            $this->name = $this->fileHandler->getClientOriginalName();
-            $this->fileHandler->move('../web/attachments/' . $this->post->getPostId() .'/', $attachmentName);
-        } catch (\Exception $e) {
-            print_r($e);
-        }
-        $this->setBinaryData(file_get_contents($attachmentPath));
+	    $tmpName = md5(uniqid(mt_rand(), true)) . '.' . $this->fileHandler->guessExtension();
+	    $tmpDir = '../web/tmp';
+	    $tmpPath = "$tmpDir/$tmpName";
+	    try {
+		    $this->name = $this->fileHandler->getClientOriginalName();
+		    $this->fileHandler->move($tmpDir, $tmpName);
+	    } catch (\Exception $e) {
+		    print_r($e);
+	    }
+	    $this->setBinaryData(file_get_contents($tmpPath));
+	    unlink($tmpPath);
     }
 }
