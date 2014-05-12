@@ -95,8 +95,6 @@
                             var conversation_member = data.conversations[i];
                             var conversation = conversation_member.conversation;
 
-                            console.log(conversation);
-
                             var $link = $('<a></a>').text(conversation.name)
                                     .attr('href', path.replace("PLACEHOLDER", conversation.id));
 
