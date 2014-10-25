@@ -5,7 +5,7 @@
  * Time: 15:52
  */
 function json_encode_ex($var){
-    if(PHP_VERSION >= 50400){
+    if(PHP_VERSION_ID >= 50400){
         return json_encode($var);
     }
     switch (gettype($var)) {
